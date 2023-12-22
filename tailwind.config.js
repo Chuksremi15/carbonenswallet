@@ -10,6 +10,7 @@ module.exports = {
         primary: "#8759F2",
         cardbg: "#f2efff",
         primaryDisabled: "#d7d0ff",
+        textPrimary: "#4c11d5",
       },
       fontFamily: {
         head: "Quicksand, sans-serif", //font-heading
