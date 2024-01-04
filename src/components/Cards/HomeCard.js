@@ -11,16 +11,16 @@ export const HomeCard = ({ pages, setPages, x, setX }) => {
       transition={{ duration: 0.5 }}
       animate={{ x: "0" }}
       exit={{ x: x }}
-      className="max-w-[400px] h-[70vh] mx-auto p-5 border rounded text-center grid grid-rows-5"
+      className="max-w-[400px] h-[70vh] mx-auto p-5 border rounded text-center grid  relative"
     >
-      <div className="row-span-4 flex items-center justify-center flex-col gap-y-4">
+      <div className="relative flex items-center flex-col gap-y-4 mt-24">
         <img className="mx-auto h-16" src="/img/logo.svg" />
         <h3 className="font-head text-xl">
           A friendly ens wallet for ethereum and other dapps
         </h3>
       </div>
 
-      <div className="row-span-1 flex flex-col gap-y-3">
+      <div className="absolute bottom-0 w-full mx-auto p-5 flex flex-col gap-y-3">
         <PrimaryButton
           action={() => {
             FramerScrollRight(pages, setPages, setX);

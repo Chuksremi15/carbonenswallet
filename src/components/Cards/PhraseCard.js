@@ -62,7 +62,7 @@ export const PhraseCard = ({ pages, setPages, x, setX }) => {
             id="scales"
             name="scales"
           />
-          <label for="scales text-base">
+          <label htmlFor="scales text-base">
             I saved my Secret Recovery Phrase{" "}
           </label>
         </div>
