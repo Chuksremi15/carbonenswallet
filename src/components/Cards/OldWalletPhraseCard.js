@@ -150,18 +150,10 @@ export const OldWalletPhraseCard = ({ pages, setPages, x, setX }) => {
       let newArray = [...secretPhraseArray];
       newArray.splice(12, 12);
       setSecretPhraseArray(newArray);
-      formObject[13] = "";
-      formObject[14] = "";
-      formObject[15] = "";
-      formObject[16] = "";
-      formObject[17] = "";
-      formObject[18] = "";
-      formObject[19] = "";
-      formObject[20] = "";
-      formObject[21] = "";
-      formObject[22] = "";
-      formObject[23] = "";
-      formObject[24] = "";
+
+      for (let i = 13; i < 25; i++) {
+        formObject[i] = "";
+      }
 
       let valuesArr = Object.values(formObject);
       checkEmpty(valuesArr, true);
