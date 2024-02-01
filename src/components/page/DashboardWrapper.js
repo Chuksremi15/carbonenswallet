@@ -1,6 +1,6 @@
 import React from "react";
 
-export const OnboardingWrapper = ({ children }) => {
+export const DashboardWrapper = ({ children }) => {
   return (
     <div className="relative pt-10 h-[90vh] flex items-center justify-center">
       <div className="absolute top-10 left-[10vh]">

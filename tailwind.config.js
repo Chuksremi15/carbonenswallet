@@ -11,10 +11,11 @@ module.exports = {
         cardbg: "#f2efff",
         primaryDisabled: "#d7d0ff",
         textPrimary: "#4c11d5",
+        bggray: "#F8F8F8",
       },
       fontFamily: {
-        head: "Quicksand, sans-serif", //font-heading
-        body: "Montserrat, sans-serif", //font-heading
+        head: "Inter, sans-serif", //font-heading
+        body: "SF UI Text, sans-serif", //font-heading
       },
     },
   },

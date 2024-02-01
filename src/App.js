@@ -9,32 +9,31 @@ import "react-toastify/dist/ReactToastify.css";
 import ScrollToTheTop from "./hooks/ScrollToTheTop";
 
 // Redux
+import { store } from "./features/store.js";
 import { Provider } from "react-redux";
-import { store, persistor } from "./redux/store";
-import { PersistGate } from "redux-persist/integration/react";
 
 function App() {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <Router>
-          <ScrollToTheTop />
-          <>
-            <ToastContainer
-              position="top-center"
-              autoClose={3000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-            />
-          </>
-          <Pages />
-        </Router>
-      </PersistGate>
+      {/* <PersistGate loading={null} persistor={persistor}> */}
+      <Router>
+        <ScrollToTheTop />
+        <>
+          <ToastContainer
+            position="top-center"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
+        </>
+        <Pages />
+      </Router>
+      {/* </PersistGate> */}
     </Provider>
   );
 }
