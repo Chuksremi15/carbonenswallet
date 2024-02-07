@@ -34,7 +34,7 @@ export const walletController = () => {
       let walletFromMnemonic = Wallet.fromPhrase(mnemonic);
 
       userAccount.accountName = account.accountName =
-        "Account" + (keyring.accounts.length + 1);
+        "Account " + (keyring.accounts.length + 1);
       userAccount.walletAddress = account.walletAddress =
         walletFromMnemonic.address;
       account.publicKey = walletFromMnemonic.publicKey;

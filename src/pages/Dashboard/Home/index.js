@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DashboardWrapper } from "../../../components/page/DashboardWrapper";
 import { AnimatePresence, motion } from "framer-motion";
 import { Transfer } from "../../../components/Transfer";
@@ -9,6 +9,12 @@ import {
 } from "../../../components/utils/framer";
 import { Assets } from "../../../components/Assets";
 import { History } from "../../../components/History";
+import { UserBalance } from "../../../components/Cards/Balance/UserBalance";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getBalance,
+  getTransactions,
+} from "../../../features/transactionSlice/transactionSlice";
 
 const style = {
   position: "absolute",
@@ -23,6 +29,8 @@ const style = {
 };
 
 const Home = () => {
+  const dispatch = useDispatch();
+
   const [pages, setPages] = useState(0);
   const [x, setX] = useState(0);
 
@@ -35,36 +43,53 @@ const Home = () => {
     setX(-5);
   };
 
+  const { balance, getBalanceLoading, accounts, getWalletDetaillsLoading } =
+    useSelector((store) => {
+      const { balance, getBalanceLoading } = store.transaction;
+
+      const { accounts, getWalletDetaillsLoading } = store.onboarding;
+
+      return {
+        balance,
+        getBalanceLoading,
+        accounts,
+        getWalletDetaillsLoading,
+      };
+    });
+
+  useEffect(() => {
+    if (!getWalletDetaillsLoading) {
+      dispatch(getBalance({ address: accounts[0].walletAddress }));
+      dispatch(getTransactions({ address: accounts[0].walletAddress }));
+    }
+  }, [getWalletDetaillsLoading, getBalance]);
+
   const componentArray = [
     <Assets x={x} active={pages === 0} />,
     <History x={x} active={pages === 1} />,
   ];
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <DashboardWrapper>
       <div className="w-[375px] h-[600px]  mx-auto  border  relative ">
-        <div className="h-[248px] bg-primary relative">
-          <div className="px-6 py-4 flex flex-col gap-y-14 ">
-            <div className="flex justify-between">
-              <div className="flex items-center justify-items-center gap-x-4">
-                <div>
-                  <img className="w-8" src="/img/icons/active.svg" />
-                </div>
-                <div className="text-white font-body">
-                  <p className="text-base m-0">Daily Driver</p>
-                  <p className="text-xs -mt-1">0x34x...bF6D3</p>
-                </div>
-              </div>
-
-              <div></div>
-            </div>
-
-            <div className="text-white font-body">
-              <h4 className="text-3xl">$404.38</h4>
-              <p className="text-sm -mt-1">1.4758 ETH</p>
-            </div>
-          </div>
-        </div>
+        {getWalletDetaillsLoading ? (
+          <></>
+        ) : (
+          <UserBalance
+            handleOpen={handleOpen}
+            accounts={accounts}
+            balance={balance}
+            getBalanceLoading={getBalanceLoading}
+          />
+        )}
 
         <div className="bg-[#fbfafd] h-[258px] relative ">
           <div className="absolute -top-[30px] left-[30px] flex gap-x-2 text-sm text-white">
@@ -88,14 +113,19 @@ const Home = () => {
             </div>
           </div>
           <div className="overflow-hidden">
-            <AnimatePresence className="flex ">
+            <AnimatePresence className="flex">
               {componentArray[pages]}
             </AnimatePresence>
           </div>
         </div>
 
         <div className="bg-[#fbfafd] w-full grid grid-cols-2 items-center justify-center gap-x-4 px-6 h-[94px] border-t border-[#e5dbf7]">
-          <Deposit />
+          <Deposit
+            open={open}
+            setOpen={setOpen}
+            handleOpen={handleOpen}
+            handleClose={handleClose}
+          />
           <Transfer />
         </div>
       </div>

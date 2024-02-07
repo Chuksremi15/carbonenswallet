@@ -4,16 +4,35 @@ import { motion } from "framer-motion";
 import { FramerScrollLeft } from "../../utils/framer";
 import { FaEthereum } from "react-icons/fa";
 import { CircularProgress } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { getBalance } from "../../../features/transactionSlice/transactionSlice";
 
 export const ViewAccounts = ({ pages, setPages, x, setX }) => {
+  const dispatch = useDispatch();
+
   const [observableStore, setObservableStore] = useState({});
   const [loading, setLoading] = useState(true);
+
+  const { balance, getBalanceLoading } = useSelector((store) => {
+    const { balance, getBalanceLoading } = store.transaction;
+
+    return {
+      balance,
+      getBalanceLoading,
+    };
+  });
 
   useEffect(() => {
     let value = localStorage.getItem("userAccounts");
     setObservableStore(JSON.parse(value));
     setLoading(false);
-  }, [loading]);
+
+    if (!loading) {
+      dispatch(
+        getBalance({ address: observableStore.userAccounts[0].walletAddress })
+      );
+    }
+  }, [loading, getBalance]);
 
   return (
     <motion.div
@@ -34,7 +53,7 @@ export const ViewAccounts = ({ pages, setPages, x, setX }) => {
         />
       </div>
       <div className="h-[460px] relative ">
-        {loading ? (
+        {getBalanceLoading ? (
           <div className="flex h-[70%] items-center justify-center">
             <CircularProgress size={20} style={{ color: "#8759F2" }} />
           </div>
@@ -49,7 +68,7 @@ export const ViewAccounts = ({ pages, setPages, x, setX }) => {
 
             <div className="relative bg-[#efefef] rounded mt-6">
               <h6 className="font-medium text-base px-4 py-2 font-body">
-                Account 1
+                {observableStore.userAccounts[0].accountName}
               </h6>
 
               <div className=" flex items-stretch justify-between font-body p-4 border-t border-gray-300">
@@ -59,7 +78,9 @@ export const ViewAccounts = ({ pages, setPages, x, setX }) => {
                   </div>
                   <div className="">
                     <p className="text-base font-medium font-body">Ethereum</p>
-                    <p className="text-sm text-gray-600 font-body">0 ETH</p>
+                    <p className="text-sm text-gray-600 font-body">
+                      {balance} ETH
+                    </p>
                   </div>
                 </div>
 

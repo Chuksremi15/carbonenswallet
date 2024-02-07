@@ -2,8 +2,19 @@ import React from "react";
 import { PrimaryButton, SecondaryButton } from "../../Buttons";
 import { motion } from "framer-motion";
 import { FramerScrollRight } from "../../utils/framer";
+import { Link, useHistory, useLocation } from "react-router-dom";
 
 export const GetStartedCard = ({ pages, setPages, x, setX }) => {
+  const history = useHistory();
+
+  const handleClick = () => {
+    history.push("/dashboard");
+
+    setPages(0);
+    localStorage.setItem("pages", 0);
+    localStorage.setItem("x", 0);
+  };
+
   return (
     <motion.div
       key={"homeCard"}
@@ -26,12 +37,7 @@ export const GetStartedCard = ({ pages, setPages, x, setX }) => {
       </div>
 
       <div className="h-[90px] w-full">
-        <PrimaryButton
-          action={() => {
-            FramerScrollRight(pages, setPages, setX);
-          }}
-          text={"Get Started"}
-        />
+        <PrimaryButton action={handleClick} text={"Get Started"} />
       </div>
     </motion.div>
   );

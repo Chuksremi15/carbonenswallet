@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import Pages from "./pages";
 import { toast, ToastContainer } from "react-toastify";
@@ -11,6 +12,7 @@ import ScrollToTheTop from "./hooks/ScrollToTheTop";
 // Redux
 import { store } from "./features/store.js";
 import { Provider } from "react-redux";
+import { getWalletDetails } from "./features/onboarding/onboardingSlice.js";
 
 function App() {
   return (
