@@ -2,8 +2,10 @@ import { useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import Pages from "./pages";
 import { toast, ToastContainer } from "react-toastify";
+import { Toaster } from "react-hot-toast";
 
 //css
+import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 
 //hooks
@@ -21,6 +23,7 @@ function App() {
       <Router>
         <ScrollToTheTop />
         <>
+          <Toaster position="top-center" reverseOrder={false} />
           <ToastContainer
             position="top-center"
             autoClose={3000}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DashboardWrapper } from "../../../components/page/DashboardWrapper";
 import { AnimatePresence, motion } from "framer-motion";
+import Modal from "@mui/material/Modal";
 import { Transfer } from "../../../components/Transfer";
 import { Deposit } from "../../../components/Deposit";
 import {
@@ -15,6 +16,8 @@ import {
   getBalance,
   getTransactions,
 } from "../../../features/transactionSlice/transactionSlice";
+import { TransferCardWrapper } from "../../../components/page/TransferCardWrapper";
+import { SideNav } from "../../../components/Nav/SideNav";
 
 const style = {
   position: "absolute",
@@ -62,7 +65,7 @@ const Home = () => {
       dispatch(getBalance({ address: accounts[0].walletAddress }));
       dispatch(getTransactions({ address: accounts[0].walletAddress }));
     }
-  }, [getWalletDetaillsLoading, getBalance]);
+  }, [getWalletDetaillsLoading, getBalance, getTransactions]);
 
   const componentArray = [
     <Assets x={x} active={pages === 0} />,
@@ -70,6 +73,7 @@ const Home = () => {
   ];
 
   const [open, setOpen] = useState(false);
+  const [openNav, setOpenNav] = useState(false);
   const handleOpen = () => {
     setOpen(true);
   };
@@ -77,19 +81,27 @@ const Home = () => {
     setOpen(false);
   };
 
+  const handleOpenNav = () => {
+    setOpenNav(true);
+  };
+  const handleCloseNav = () => {
+    setOpenNav(false);
+  };
+
   return (
     <DashboardWrapper>
+      <SideNav openNav={openNav} handleCloseNav={handleCloseNav} />
       <div className="w-[375px] h-[600px]  mx-auto  border  relative ">
-        {getWalletDetaillsLoading ? (
-          <></>
-        ) : (
-          <UserBalance
-            handleOpen={handleOpen}
-            accounts={accounts}
-            balance={balance}
-            getBalanceLoading={getBalanceLoading}
-          />
-        )}
+        <UserBalance
+          handleOpen={handleOpenNav}
+          handleOpenAddress={handleOpen}
+          open={openNav}
+          handleClose={handleCloseNav}
+          accounts={accounts}
+          balance={balance}
+          getBalanceLoading={getBalanceLoading}
+          getWalletDetaillsLoading={getWalletDetaillsLoading}
+        />
 
         <div className="bg-[#fbfafd] h-[258px] relative ">
           <div className="absolute -top-[30px] left-[30px] flex gap-x-2 text-sm text-white">
@@ -122,7 +134,6 @@ const Home = () => {
         <div className="bg-[#fbfafd] w-full grid grid-cols-2 items-center justify-center gap-x-4 px-6 h-[94px] border-t border-[#e5dbf7]">
           <Deposit
             open={open}
-            setOpen={setOpen}
             handleOpen={handleOpen}
             handleClose={handleClose}
           />

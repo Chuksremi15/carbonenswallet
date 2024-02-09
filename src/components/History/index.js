@@ -27,7 +27,7 @@ export const History = ({ x }) => {
           <motion.div
             key={"homeCard"}
             initial={{ y: 5 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.1 }}
             animate={{ y: "0" }}
             exit={{ y: "0" }}
           >
@@ -86,7 +86,7 @@ export const History = ({ x }) => {
       <motion.div
         key={"homeCard"}
         initial={{ x: x }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.1 }}
         animate={{ x: "0" }}
         exit={{ x: -100 }}
       >

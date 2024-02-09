@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { ethers, BigNumber } from "ethers";
+import { ethers, BigNumber, formatEther } from "ethers";
 // import { openModal } from "../modal/modalSlice";
 
 const initialState = {
@@ -11,16 +11,9 @@ const initialState = {
   getTransactionsLoading: true,
 };
 
-let etherscanUrl = `https://api.etherscan.io/api
-?module=account
-&action=txlist
-&address=0xc5102fE9359FD9a28f877a67E36B0F050d81a3CC
-&startblock=0
-&endblock=99999999
-&page=1
-&offset=10
-&sort=asc
-&apikey=YourApiKeyToken`;
+const etherscanUrl = (address, action) => {
+  return `https://api-sepolia.etherscan.io/api?module=account&action=${action}&address=${address}&startblock=0endblock=99999999&page=1&offset=10&sort=asc&apikey=ID8G2U6S2EWZYZ7JKPWXIFIY7SUDZFX5EP`;
+};
 
 const url =
   "https://eth-sepolia.g.alchemy.com/v2/i__hU94P_jyFKF1ZcwVpE4Uamw0VB71z";
@@ -32,7 +25,8 @@ export const getBalance = createAsyncThunk(
   async ({ address }, thunkAPI) => {
     try {
       let response = await provider.getBalance(address);
-      response = Number(response);
+      response = formatEther(response);
+
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue("something went wrong");
@@ -44,10 +38,8 @@ export const getTransactions = createAsyncThunk(
   "transaction/getTransactions",
   async ({ address }, thunkAPI) => {
     try {
-      let response = await axios.get(
-        `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=ID8G2U6S2EWZYZ7JKPWXIFIY7SUDZFX5EP`
-      );
-
+      const etherUrl = etherscanUrl(address, "txlist");
+      let response = await axios.get(etherUrl);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue("something went wrong");

@@ -19,7 +19,7 @@ export const GetStartedCard = ({ pages, setPages, x, setX }) => {
     <motion.div
       key={"homeCard"}
       initial={{ x: 5 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.1 }}
       animate={{ x: "0" }}
       exit={{ x: x }}
       className="w-[375px] h-[600px] mx-auto p-5 items-center justify-center border rounded text-center"

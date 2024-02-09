@@ -9,7 +9,7 @@ export const AddRecipient = ({ handleClose, pages, setPages, x, setX }) => {
     <motion.div
       key={"homeCard"}
       initial={{ y: 5 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.1 }}
       animate={{ y: "0" }}
       exit={{ y: "0" }}
     >
