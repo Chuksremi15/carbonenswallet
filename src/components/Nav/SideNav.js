@@ -48,7 +48,7 @@ export const SideNav = ({ openNav, handleCloseNav }) => {
                   <h6 className="font-head text-sm text-textPrimary">
                     CarbonENSWallet V1.0.0
                   </h6>
-                  <p className="font-head text-xs text-[#807DC0]">
+                  <p className="font-head text-xs text-textLight">
                     Inpired and funded by buidlguidl
                   </p>
                 </div>
@@ -63,7 +63,7 @@ export const SideNav = ({ openNav, handleCloseNav }) => {
                   <h6 className="font-head text-sm text-textPrimary">
                     Security & Privacy
                   </h6>
-                  <p className="font-head text-xs text-[#807DC0]">
+                  <p className="font-head text-xs text-textLight">
                     Privacy settings and wallet seed phrase
                   </p>
                 </div>

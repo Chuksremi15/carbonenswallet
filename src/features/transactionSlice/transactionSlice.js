@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { ethers, BigNumber, formatEther } from "ethers";
+import redstone from "redstone-api";
 // import { openModal } from "../modal/modalSlice";
 
 const initialState = {
@@ -18,16 +19,26 @@ const etherscanUrl = (address, action) => {
 const url =
   "https://eth-sepolia.g.alchemy.com/v2/i__hU94P_jyFKF1ZcwVpE4Uamw0VB71z";
 
-let provider = new ethers.JsonRpcProvider(url);
+export let provider = new ethers.JsonRpcProvider(url);
+
+function financial(x) {
+  return Number.parseFloat(x).toFixed(4);
+}
 
 export const getBalance = createAsyncThunk(
   "transaction/getBalance",
   async ({ address }, thunkAPI) => {
     try {
       let response = await provider.getBalance(address);
-      response = formatEther(response);
+      let balance = formatEther(response);
 
-      return response;
+      const price = await redstone.getPrice("ETH");
+      const usdBalance = Math.round(price.value * balance * 100) / 100;
+      // thunkAPI.dispatch(getUSDBalance(response));
+
+      balance = financial(balance);
+
+      return { ethBalance: balance, usdBalance };
     } catch (error) {
       return thunkAPI.rejectWithValue("something went wrong");
     }
@@ -47,6 +58,19 @@ export const getTransactions = createAsyncThunk(
   }
 );
 
+export const getUSDBalance = createAsyncThunk(
+  "transaction/getUSDBalance",
+  async (balance, thunkAPI) => {
+    try {
+      const price = await redstone.getPrice("ETH");
+      const response = Math.round(price.value * balance * 100) / 100;
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue("something went wrong");
+    }
+  }
+);
+
 const onboardingSlice = createSlice({
   name: "transaction",
   initialState,
@@ -56,7 +80,8 @@ const onboardingSlice = createSlice({
         state.getBalanceLoading = true;
       })
       .addCase(getBalance.fulfilled, (state, action) => {
-        state.balance = action.payload;
+        state.balance = action.payload.ethBalance;
+        state.usdBalance = action.payload.usdBalance;
         state.getBalanceLoading = false;
       })
       .addCase(getBalance.rejected, (state, action) => {
@@ -71,6 +96,9 @@ const onboardingSlice = createSlice({
       })
       .addCase(getTransactions.rejected, (state, action) => {
         state.getTransactionsLoading = false;
+      })
+      .addCase(getUSDBalance.fulfilled, (state, action) => {
+        state.usdBalance = action.payload;
       });
   },
 });

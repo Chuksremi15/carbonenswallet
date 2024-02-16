@@ -1,10 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TransferCardWrapper } from "../../page/TransferCardWrapper";
 import { CardPrimaryButton, CardSecondaryButton } from "../../Buttons";
 import { motion } from "framer-motion";
 import { FramerScrollLeft } from "../../utils/framer";
+import { Wallet, formatEther } from "ethers";
+import { provider } from "../../../features/transactionSlice/transactionSlice";
+import toast from "react-hot-toast";
+import { Network } from "../../../utils/contants";
 
-export const ConfirmSend = ({ handleClose, pages, setPages, x, setX }) => {
+export const ConfirmSend = ({
+  handleClose,
+  pages,
+  setPages,
+  x,
+  setX,
+  transactionData,
+  gasFeeEstimate,
+  amountUsd,
+}) => {
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    try {
+      let wallet = new Wallet(process.env.REACT_APP_PRIVATE_KEY, provider);
+
+      let txResponse = await wallet.sendTransaction(transactionData);
+
+      await txResponse.wait(1);
+
+      console.log(
+        `Proposal has been mined at blocknumber: ${txResponse.blockNumber}, transaction hash: ${txResponse.hash}`
+      );
+
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      if (error) {
+        toast.error("Invalid request");
+      }
+
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    console.log(transactionData);
+  }, [transactionData]);
+
   return (
     <motion.div
       key={"homeCard"}
@@ -19,10 +62,10 @@ export const ConfirmSend = ({ handleClose, pages, setPages, x, setX }) => {
             <label className="text-textPrimary text-sm">Confirm send to</label>
             <div className="flex items-center justify-items-center gap-x-4 mt-1">
               <div className="bg-white rounded-full p-0.5">
-                <img className="w-7" src="/img/icons/addressicon.svg" />
+                <img className="w-10" src="/img/icons/addressicon.svg" />
               </div>
-              <p className="text-[15px] text-textPrimary font-body">
-                0X84b...ccb49
+              <p className="text-[15px] text-textPrimary font-body break-all">
+                {transactionData && transactionData.to}
               </p>
             </div>
           </div>
@@ -30,40 +73,58 @@ export const ConfirmSend = ({ handleClose, pages, setPages, x, setX }) => {
             <div className="border-b border-[#e5dbf7] px-6  flex justify-between items-center justify-items-center">
               <p className="text-sm text-textPrimary">Network</p>
               <p className="text-sm text-textPrimary font-light">
-                Main Ethereum Network
+                {Network} Network
               </p>
             </div>
             <div className="border-b border-[#e5dbf7] px-6  flex justify-between items-center justify-items-center">
               <p className="text-sm text-textPrimary">Amount</p>
               <div className="text-right">
-                <p className="text-sm text-textPrimary font-light">$30.69</p>
-                <p className="text-xs text-[#b4b3df] font-light">0.00475 ETH</p>
+                <p className="text-sm text-textPrimary font-light">
+                  ${amountUsd && amountUsd}
+                </p>
+                <p className="text-xs text-[#b4b3df] font-light">
+                  {transactionData && formatEther(transactionData.value)} ETH
+                </p>
               </div>
             </div>
             <div className="border-b border-[#e5dbf7] px-6  flex justify-between items-center justify-items-center">
               <p className="text-sm text-textPrimary">Gas fee</p>
               <div className="text-right">
-                <p className="text-sm text-textPrimary font-light">$30.69</p>
-                <p className="text-xs text-[#b4b3df] font-light">0.00475 ETH</p>
+                <p className="text-sm text-textPrimary font-light">
+                  ${gasFeeEstimate && gasFeeEstimate.inUSD}
+                </p>
+                <p className="text-xs text-[#b4b3df] font-light">
+                  {gasFeeEstimate && gasFeeEstimate.inEth} ETH
+                </p>
               </div>
             </div>
             <div className=" px-6 flex justify-between items-center justify-items-center">
               <p className="text-sm text-textPrimary">Total</p>
               <div className="text-right">
-                <p className="text-sm text-textPrimary font-light">$30.69</p>
-                <p className="text-xs text-[#b4b3df] font-light">0.00475 ETH</p>
+                <p className="text-sm text-textPrimary font-light">
+                  ${gasFeeEstimate.inUSD + amountUsd}
+                </p>
+                <p className="text-xs text-[#b4b3df] font-light">
+                  {Number(gasFeeEstimate.inEth) +
+                    Number(formatEther(transactionData.value))}
+                  ETH
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-[#fbfafd] flex items-center justify-between gap-x-5 h-[94px] px-8 border-t border-[#e5dbf7]">
+        <div className="bg-bggray flex items-center justify-between gap-x-5 h-[94px] px-8 border-t border-[#e5dbf7]">
           <CardSecondaryButton
             action={() => FramerScrollLeft(pages, setPages, setX)}
             disabled={false}
             text={"Reject"}
           />
-          <CardPrimaryButton text={"Confirm"} />
+          <CardPrimaryButton
+            loading={loading}
+            action={() => handleSubmit()}
+            text={"Confirm"}
+          />
         </div>
       </TransferCardWrapper>
     </motion.div>

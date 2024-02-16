@@ -183,7 +183,7 @@ export const OldWalletPhraseCard = ({ pages, setPages, x, setX }) => {
         <h3 className="font-body text-2xl font-semibold text-textPrimary">
           Secret Recovery Phrase
         </h3>
-        <h3 className="font-head text-sm  text-[#807DC0] mt-2">
+        <h3 className="font-head text-sm  text-textLight mt-2">
           Import an existing wallet with your 12-word secret recovery phrase.
         </h3>
 

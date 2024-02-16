@@ -5,9 +5,18 @@ import { AddRecipient } from "../Cards/Transfer/AddRecipient";
 import { AnimatePresence } from "framer-motion";
 import { SendTo } from "../Cards/Transfer/SendTo";
 import { ConfirmSend } from "../Cards/Transfer/ConfirmSend";
+import { useDispatch, useSelector } from "react-redux";
 
 export const Transfer = () => {
   const [open, setOpen] = useState(false);
+  const [recipient, setRecipient] = useState("");
+  const [amount, setAmount] = useState(0);
+  const [amountUsd, setAmountUsd] = useState(0);
+  const [maxGas, setMaxGas] = useState(0);
+  const [gas, setGas] = useState(0);
+  const [transactionData, setTransactionData] = useState({});
+  const [gasFeeEstimate, setGasFeeEstimate] = useState({});
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -18,12 +27,34 @@ export const Transfer = () => {
   const [pages, setPages] = useState(0);
   const [x, setX] = useState(0);
 
+  const {
+    balance,
+    accounts,
+    usdBalance,
+    getBalanceLoading,
+    getWalletDetaillsLoading,
+  } = useSelector((store) => {
+    const { balance, usdBalance, getBalanceLoading } = store.transaction;
+
+    const { accounts, getWalletDetaillsLoading } = store.onboarding;
+
+    return {
+      accounts,
+      balance,
+      usdBalance,
+      getBalanceLoading,
+      getWalletDetaillsLoading,
+    };
+  });
+
   const componentArray = [
     <AddRecipient
       pages={pages}
       setPages={setPages}
       x={x}
       setX={setX}
+      setRecipient={setRecipient}
+      recipient={recipient}
       handleClose={handleClose}
     />,
     <SendTo
@@ -31,7 +62,16 @@ export const Transfer = () => {
       pages={pages}
       setPages={setPages}
       x={x}
+      recipient={recipient}
       setX={setX}
+      balance={balance}
+      amount={amount}
+      setAmount={setAmount}
+      amountUsd={amountUsd}
+      setAmountUsd={setAmountUsd}
+      fromAddress={!getWalletDetaillsLoading && accounts[0].walletAddress}
+      setTransactionData={setTransactionData}
+      setGasFeeEstimate={setGasFeeEstimate}
     />,
     <ConfirmSend
       handleClose={handleClose}
@@ -39,6 +79,9 @@ export const Transfer = () => {
       setPages={setPages}
       x={x}
       setX={setX}
+      transactionData={transactionData}
+      gasFeeEstimate={gasFeeEstimate}
+      amountUsd={amountUsd}
     />,
   ];
 

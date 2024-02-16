@@ -11,7 +11,7 @@ export const Assets = ({ x }) => {
           </div>
           <div className="font-body">
             <p className="text-sm m-0 text-textPrimary">0.56 {token}</p>
-            <p className="text-xs text-[#807DC0]">$356.47</p>
+            <p className="text-xs text-textLight">$356.47</p>
           </div>
         </div>
       </div>

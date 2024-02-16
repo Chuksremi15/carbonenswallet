@@ -7,10 +7,11 @@ module.exports = {
         144: "36rem",
       },
       colors: {
-        primary: "#8759F2",
+        primary: "#4C4AA1",
         cardbg: "#f2efff",
-        primaryDisabled: "#d7d0ff",
-        textPrimary: "#4c11d5",
+        primaryDisabled: "#BFBEDF",
+        textPrimary: "#373583",
+        textLight: "#807DC0",
         bggray: "#F8F8F8",
       },
       fontFamily: {

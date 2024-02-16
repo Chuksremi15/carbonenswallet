@@ -46,19 +46,35 @@ const Home = () => {
     setX(-5);
   };
 
-  const { balance, getBalanceLoading, accounts, getWalletDetaillsLoading } =
-    useSelector((store) => {
-      const { balance, getBalanceLoading } = store.transaction;
+  const {
+    balance,
+    usdBalance,
+    getBalanceLoading,
+    accounts,
+    getWalletDetaillsLoading,
+    getTransactionsLoading,
+    transactions,
+  } = useSelector((store) => {
+    const {
+      balance,
+      usdBalance,
+      getBalanceLoading,
+      transactions,
+      getTransactionsLoading,
+    } = store.transaction;
 
-      const { accounts, getWalletDetaillsLoading } = store.onboarding;
+    const { accounts, getWalletDetaillsLoading } = store.onboarding;
 
-      return {
-        balance,
-        getBalanceLoading,
-        accounts,
-        getWalletDetaillsLoading,
-      };
-    });
+    return {
+      balance,
+      usdBalance,
+      getBalanceLoading,
+      accounts,
+      getWalletDetaillsLoading,
+      getTransactionsLoading,
+      transactions,
+    };
+  });
 
   useEffect(() => {
     if (!getWalletDetaillsLoading) {
@@ -69,7 +85,12 @@ const Home = () => {
 
   const componentArray = [
     <Assets x={x} active={pages === 0} />,
-    <History x={x} active={pages === 1} />,
+    <History
+      x={x}
+      transactions={transactions}
+      getTransactionsLoading={getTransactionsLoading}
+      active={pages === 1}
+    />,
   ];
 
   const [open, setOpen] = useState(false);
@@ -93,6 +114,7 @@ const Home = () => {
       <SideNav openNav={openNav} handleCloseNav={handleCloseNav} />
       <div className="w-[375px] h-[600px]  mx-auto  border  relative ">
         <UserBalance
+          usdBalance={usdBalance}
           handleOpen={handleOpenNav}
           handleOpenAddress={handleOpen}
           open={openNav}
@@ -103,7 +125,7 @@ const Home = () => {
           getWalletDetaillsLoading={getWalletDetaillsLoading}
         />
 
-        <div className="bg-[#fbfafd] h-[258px] relative ">
+        <div className="bg-[#F8F8F8] h-[258px] relative ">
           <div className="absolute -top-[30px] left-[30px] flex gap-x-2 text-sm text-white">
             <div
               onClick={() => FramerScrollLeft()}
@@ -124,14 +146,14 @@ const Home = () => {
               History
             </div>
           </div>
-          <div className="overflow-hidden">
+          <div className="overflow-hidden h-[258px]">
             <AnimatePresence className="flex">
               {componentArray[pages]}
             </AnimatePresence>
           </div>
         </div>
 
-        <div className="bg-[#fbfafd] w-full grid grid-cols-2 items-center justify-center gap-x-4 px-6 h-[94px] border-t border-[#e5dbf7]">
+        <div className="bg-bggray w-full grid grid-cols-2 items-center justify-center gap-x-4 px-6 h-[94px] border-t border-[#e5dbf7]">
           <Deposit
             open={open}
             handleOpen={handleOpen}

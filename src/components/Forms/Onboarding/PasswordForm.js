@@ -64,7 +64,7 @@ export const PasswordForm = ({ pages, setPages, x, setX }) => {
         </p>
 
         {passwordStrengthLabel.text !== "strong" && (
-          <p className="text-[#807DC0] text-xs text-left  font-normal font-body">
+          <p className="text-textLight text-xs text-left  font-normal font-body">
             A strong password can improve the security of your wallet should
             your device be stolen or compromised.
           </p>
@@ -111,7 +111,7 @@ export const PasswordForm = ({ pages, setPages, x, setX }) => {
           <h3 className="font-body text-2xl font-semibold text-textPrimary">
             Create a password
           </h3>
-          <h3 className="font-head text-sm  text-[#807DC0] mt-2">
+          <h3 className="font-head text-sm  text-textLight mt-2">
             You will use this to unlock your wallet
           </h3>
         </div>

@@ -1,3 +1,5 @@
+import { CircularProgress } from "@material-ui/core";
+
 export const PrimaryButton = ({ text, loading, action, disabled }) => {
   return (
     <div
@@ -30,7 +32,7 @@ export const CardPrimaryButton = ({ text, loading, action, disabled }) => {
         disabled ? "bg-primaryDisabled" : "bg-primary"
       } flex items-center justify-center w-full  px-10 py-[9px]  cursor-pointer rounded font-body text-white text-sm hover:scale-[1.01]  transition-all duration-200`}
     >
-      {text}
+      {loading ? <CircularProgress size={20} color="white" /> : text}
     </div>
   );
 };

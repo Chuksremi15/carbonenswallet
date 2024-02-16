@@ -81,7 +81,7 @@ export const Deposit = ({ handleClose, handleOpen, open }) => {
               <div className="grid grid-rows-6 h-full">
                 <div className="font-body row-span-6 px-6 pb-8 relative border-b border-[#e5dbf7] mt-6">
                   <h6 className="text-textPrimary text-sm">Direct deposit</h6>
-                  <p className="text-[13px] text-[#807DC0] font-normal">
+                  <p className="text-[13px] text-textLight font-normal">
                     The address below is to recieve ETH
                   </p>
 
@@ -103,7 +103,7 @@ export const Deposit = ({ handleClose, handleOpen, open }) => {
                               </p>
                             </div>
 
-                            <p className="font-body bg-white p-2 rounded text-xs break-words w-[190px]  text-[#807DC0]">
+                            <p className="font-body bg-white p-2 rounded text-xs break-words w-[190px]  text-textLight">
                               {accounts[0].walletAddress}
                             </p>
                           </div>
@@ -175,7 +175,7 @@ export const Deposit = ({ handleClose, handleOpen, open }) => {
                               </p>
                             </div>
 
-                            <div className="bg-[#fbfafd] flex items-center justify-between gap-x-5 h-[94px] px-4  mt-auto">
+                            <div className="bg-bggray flex items-center justify-between gap-x-5 h-[94px] px-4  mt-auto">
                               {privateKey ? (
                                 <>
                                   <CardPrimaryButton
@@ -213,7 +213,7 @@ export const Deposit = ({ handleClose, handleOpen, open }) => {
                   <h6 className="text-textPrimary text-sm">
                     Buy ETH on binance
                   </h6>
-                  <p className="text-[13px] text-[#807DC0] font-normal">
+                  <p className="text-[13px] text-textLight font-normal">
                     You can buy eth on Binance and send to your metamask account
                   </p>
                 </div> */}

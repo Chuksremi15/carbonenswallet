@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import redstone from "redstone-api";
 
 export const UserBalance = ({
+  usdBalance,
   accounts,
   balance,
   getBalanceLoading,
@@ -13,8 +14,6 @@ export const UserBalance = ({
   handleClose,
   getWalletDetaillsLoading,
 }) => {
-  const [active, setActive] = useState(false);
-
   const toggle = () => {
     if (open) {
       handleClose();
@@ -22,17 +21,6 @@ export const UserBalance = ({
       handleOpen();
     }
   };
-
-  useEffect(() => {
-    if (!getBalanceLoading) {
-      async function getPrice() {
-        const price = await redstone.getPrice("ETH");
-        console.log(price);
-      }
-
-      getPrice();
-    }
-  }, [getBalanceLoading]);
 
   return (
     <div className="h-[248px] bg-primary relative">
@@ -78,7 +66,7 @@ export const UserBalance = ({
             </div>
           ) : (
             <>
-              <h4 className="text-3xl">$404.38</h4>
+              <h4 className="text-3xl">${usdBalance}</h4>
               <p className="text-sm -mt-1">{balance} ETH</p>
             </>
           )}

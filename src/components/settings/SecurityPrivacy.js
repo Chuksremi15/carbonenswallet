@@ -71,14 +71,16 @@ const SecurityPrivacy = ({ openSp, handleCloseSp, handleCloseNav }) => {
                 <h6 className="font-body text-xl text-textPrimary">
                   Security Recovery Phrase
                 </h6>
-                <p className="font-head text-xs text-[#807DC0]">
+                <p className="font-head text-xs text-textLight">
                   The secret Recovery Phrase provides full access to your wallet
                   and funds. CarbonENSWallet is a non-custodial wallet. That
                   means you're the owner of your SRP.
                 </p>
 
-                <div className="border-l-4 border-red-500 h-auto px-2 py-2 rounded bg-red-100 flex gap-x-2">
-                  <IoIosWarning size={40} />
+                <div className="border-l-4 border-red-500 h-auto px-2 py-2 rounded bg-red-50 flex gap-x-2">
+                  <div>
+                    <IoIosWarning className="text-2xl text-red-600" />
+                  </div>
                   <p className="font-body text-sm">
                     Make sure no one is looking at your screen. CarbonENSWallet
                     Support will never request this.
@@ -122,7 +124,7 @@ const SecurityPrivacy = ({ openSp, handleCloseSp, handleCloseNav }) => {
                 )}
               </div>
 
-              <div className="bg-[#fbfafd] flex items-center justify-between gap-x-5 h-[94px] px-8 border-t border-[#e5dbf7] mt-auto">
+              <div className="bg-bggray flex items-center justify-between gap-x-5 h-[94px] px-8 border-t border-[#e5dbf7] mt-auto">
                 <CardSecondaryButton
                   action={handleClose}
                   disabled={false}

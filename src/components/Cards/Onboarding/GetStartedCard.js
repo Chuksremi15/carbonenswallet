@@ -8,11 +8,10 @@ export const GetStartedCard = ({ pages, setPages, x, setX }) => {
   const history = useHistory();
 
   const handleClick = () => {
-    history.push("/dashboard");
-
     setPages(0);
     localStorage.setItem("pages", 0);
     localStorage.setItem("x", 0);
+    history.push("/dashboard");
   };
 
   return (
@@ -30,7 +29,7 @@ export const GetStartedCard = ({ pages, setPages, x, setX }) => {
           <h3 className="font-body text-2xl font-semibold text-textPrimary text-center">
             You are all done!
           </h3>
-          <h3 className="font-head text-sm  text-[#807DC0] mt-2 text-center">
+          <h3 className="font-head text-sm  text-textLight mt-2 text-center">
             You can now fully enjoy your wallet
           </h3>
         </div>

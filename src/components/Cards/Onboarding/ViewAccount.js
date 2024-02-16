@@ -62,7 +62,7 @@ export const ViewAccounts = ({ pages, setPages, x, setX }) => {
             <h3 className="font-body text-2xl font-semibold text-textPrimary text-center">
               Imports Accounts
             </h3>
-            <h3 className="font-head text-sm  text-[#807DC0] mt-2 text-center">
+            <h3 className="font-head text-sm  text-textLight mt-2 text-center">
               1 account found
             </h3>
 
