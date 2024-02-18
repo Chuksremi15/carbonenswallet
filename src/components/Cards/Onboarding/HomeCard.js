@@ -4,6 +4,10 @@ import { motion } from "framer-motion";
 import { FramerScrollRight } from "../../utils/framer";
 
 export const HomeCard = ({ pages, setPages, x, setX }) => {
+  const handleScroll = () => {
+    FramerScrollRight(3, setPages, setX);
+  };
+
   return (
     <motion.div
       key={"homeCard"}
@@ -29,7 +33,8 @@ export const HomeCard = ({ pages, setPages, x, setX }) => {
       <div className="absolute bottom-0 w-full mx-auto p-5 flex gap-x-4 gap-y-3">
         <PrimaryButton
           action={() => {
-            FramerScrollRight(pages, setPages, setX);
+            // FramerScrollRight(pages, setPages, setX);
+            handleScroll();
           }}
           text={"Create account"}
         />

@@ -38,15 +38,18 @@ export const UserBalance = ({
               <></>
             ) : (
               <div className="text-white font-body">
-                <p className="text-base m-0">{accounts[0].accountName}</p>
+                <p className="text-base m-0">
+                  {accounts && accounts[0].accountName}
+                </p>
                 <p className="text-xs -mt-0.5">
                   {" "}
-                  {accounts[0].walletAddress.slice(0, 5)}
+                  {accounts && accounts[0].walletAddress.slice(0, 5)}
                   ....
-                  {accounts[0].walletAddress.slice(
-                    accounts[0].walletAddress.length - 5,
-                    accounts[0].walletAddress.length
-                  )}
+                  {accounts &&
+                    accounts[0].walletAddress.slice(
+                      accounts && accounts[0].walletAddress.length - 5,
+                      accounts && accounts[0].walletAddress.length
+                    )}
                 </p>
               </div>
             )}

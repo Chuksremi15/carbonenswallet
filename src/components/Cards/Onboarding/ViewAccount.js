@@ -6,6 +6,11 @@ import { FaEthereum } from "react-icons/fa";
 import { CircularProgress } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getBalance } from "../../../features/transactionSlice/transactionSlice";
+import { createWalletClient, custom, http } from "viem";
+import { mainnet, sepolia } from "viem/chains";
+import { addEnsContracts } from "@ensdomains/ensjs";
+import { createSubname, setAddressRecord } from "@ensdomains/ensjs/wallet";
+import { privateKeyToAccount } from "viem/accounts";
 
 export const ViewAccounts = ({ pages, setPages, x, setX }) => {
   const dispatch = useDispatch();
@@ -33,6 +38,49 @@ export const ViewAccounts = ({ pages, setPages, x, setX }) => {
       );
     }
   }, [loading, getBalance]);
+
+  const hash = async () => {
+    setPages(pages + 1);
+    setX(1000);
+    // try {
+    //   const account = privateKeyToAccount(process.env.REACT_APP_PRIVATE_KEY);
+    //   console.log(account.address);
+    //   const wallet = createWalletClient({
+    //     account,
+    //     chain: addEnsContracts({ network: "sepolia", contracts: "registry" }),
+    //     transport: http(
+    //       "https://eth-sepolia.g.alchemy.com/v2/i__hU94P_jyFKF1ZcwVpE4Uamw0VB71z"
+    //     ),
+    //   });
+    //   // console.log(wallet);
+    //   let createSubTransactionHash = await createSubname(wallet, {
+    //     name: "sam.remyboy.eth",
+    //     owner: account.address,
+    //     contract: "registry",
+    //     chain: sepolia,
+    //   });
+    //   let setAddTransactionHash = await setAddressRecord(wallet, {
+    //     name: "sam.remyboy.eth",
+    //     coin: "ETH",
+    //     value: "0x673cdcbaDBD4137A627A92123c94D5CDBA05839c",
+    //     resolverAddress: "0x8FADE66B79cC9f707aB26799354482EB93a5B7dD",
+    //     chain: sepolia,
+    //   });
+    //   let transferTransactionHash = await createSubname(wallet, {
+    //     name: "sam.remyboy.eth",
+    //     owner: "0x673cdcbaDBD4137A627A92123c94D5CDBA05839c",
+    //     contract: "registry",
+    //     chain: sepolia,
+    //   });
+    //   console.log(
+    //     createSubTransactionHash,
+    //     setAddTransactionHash,
+    //     transferTransactionHash
+    //   );
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  };
 
   return (
     <motion.div
@@ -68,7 +116,7 @@ export const ViewAccounts = ({ pages, setPages, x, setX }) => {
 
             <div className="relative bg-[#efefef] rounded mt-6">
               <h6 className="font-medium text-base px-4 py-2 font-body">
-                {observableStore.userAccounts[0].accountName}
+                {!loading && observableStore.userAccounts[0].accountName}
               </h6>
 
               <div className=" flex items-stretch justify-between font-body p-4 border-t border-gray-300">
@@ -79,19 +127,22 @@ export const ViewAccounts = ({ pages, setPages, x, setX }) => {
                   <div className="">
                     <p className="text-base font-medium font-body">Ethereum</p>
                     <p className="text-sm text-gray-600 font-body">
-                      {balance} ETH
+                      {!getBalanceLoading && balance} ETH
                     </p>
                   </div>
                 </div>
 
                 <div className="text-right">
                   <p className="font-medium text-base font-body">
-                    {observableStore.userAccounts[0].walletAddress.slice(0, 6)}
+                    {!loading &&
+                      observableStore.userAccounts[0].walletAddress.slice(0, 6)}
                     ....
-                    {observableStore.userAccounts[0].walletAddress.slice(
-                      observableStore.userAccounts[0].walletAddress.length - 5,
-                      observableStore.userAccounts[0].walletAddress.length
-                    )}
+                    {!loading &&
+                      observableStore.userAccounts[0].walletAddress.slice(
+                        observableStore.userAccounts[0].walletAddress.length -
+                          5,
+                        observableStore.userAccounts[0].walletAddress.length
+                      )}
                   </p>
                   <p className="text-sm text-gray-600 font-body">New wallet</p>
                 </div>
@@ -104,8 +155,9 @@ export const ViewAccounts = ({ pages, setPages, x, setX }) => {
       <div className="h-[90px] w-full ">
         <PrimaryButton
           action={() => {
-            setPages(pages + 1);
-            setX(1000);
+            // setPages(pages + 1);
+            // setX(1000);
+            hash();
           }}
           disabled={false}
           text={"Continue"}

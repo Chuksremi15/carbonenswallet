@@ -7,9 +7,11 @@ import {
   TransferCardWrapper,
 } from "../page/TransferCardWrapper";
 import SecurityPrivacy from "../settings/SecurityPrivacy";
+import DeleteAccount from "../settings/DeleteAccount";
 
 export const SideNav = ({ openNav, handleCloseNav }) => {
   const [openSp, setOpenSp] = useState(false);
+  const [openDa, setOpenDa] = useState(false);
 
   const handleOpenSp = () => {
     setOpenSp(true);
@@ -17,12 +19,23 @@ export const SideNav = ({ openNav, handleCloseNav }) => {
   const handleCloseSp = () => {
     setOpenSp(false);
   };
+  const handleOpenDa = () => {
+    setOpenDa(true);
+  };
+  const handleCloseDa = () => {
+    setOpenDa(false);
+  };
 
   return (
     <>
       <SecurityPrivacy
         openSp={openSp}
         handleCloseSp={handleCloseSp}
+        handleCloseNav={handleCloseNav}
+      />
+      <DeleteAccount
+        openDa={openDa}
+        handleCloseDa={handleCloseDa}
         handleCloseNav={handleCloseNav}
       />
       <Modal
@@ -65,6 +78,28 @@ export const SideNav = ({ openNav, handleCloseNav }) => {
                   </h6>
                   <p className="font-head text-xs text-textLight">
                     Privacy settings and wallet seed phrase
+                  </p>
+                </div>
+                <div
+                  onClick={() => handleOpenDa()}
+                  className="border-b border-[#e5dbf7] pl-6 flex flex-col justify-center gap-y-0.5  h-full cursor-pointer"
+                >
+                  <h6 className="font-head text-sm text-textPrimary">
+                    Delete Account
+                  </h6>
+                  <p className="font-head text-xs text-textLight">
+                    Delete Carbon Account
+                  </p>
+                </div>
+                <div
+                  onClick={() => handleOpenSp()}
+                  className="border-b border-[#e5dbf7] pl-6 flex flex-col justify-center gap-y-0.5  h-full cursor-pointer"
+                >
+                  <h6 className="font-head text-sm text-textPrimary">
+                    Lock Account
+                  </h6>
+                  <p className="font-head text-xs text-textLight">
+                    Lock Carbon Account
                   </p>
                 </div>
               </div>

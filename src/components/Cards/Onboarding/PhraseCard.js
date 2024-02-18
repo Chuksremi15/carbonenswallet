@@ -48,7 +48,7 @@ export const PhraseCard = ({ pages, setPages, x, setX }) => {
     try {
       setCreateAccountLoading(true);
 
-      let value = await addAccount(mnemonic);
+      await addAccount(mnemonic);
 
       setCreateAccountLoading(false);
 

@@ -104,13 +104,15 @@ export const Deposit = ({ handleClose, handleOpen, open }) => {
                             </div>
 
                             <p className="font-body bg-white p-2 rounded text-xs break-words w-[190px]  text-textLight">
-                              {accounts[0].walletAddress}
+                              {accounts && accounts[0].walletAddress}
                             </p>
                           </div>
 
                           <div
                             onClick={() =>
-                              copyToClipboard(accounts[0].walletAddress)
+                              copyToClipboard(
+                                accounts && accounts[0].walletAddress
+                              )
                             }
                             className="cursor-pointer py-2 text-xs rounded text-textPrimary flex items-center justify-center w-full bg-white hover:bg-primary hover:text-white transition-all duration-500"
                           >

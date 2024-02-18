@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 // import { openModal } from "../modal/modalSlice";
+import { browserHistory } from "react-router";
 
 const initialState = {
   accounts: [],
@@ -16,9 +17,16 @@ const onboardingSlice = createSlice({
   reducers: {
     getWalletDetails: (state, { payload }) => {
       let value = localStorage.getItem("userAccounts");
-      value = JSON.parse(value);
-      state.accounts = value.userAccounts;
-      state.getWalletDetaillsLoading = false;
+
+      console.log(value);
+
+      if (value === null) {
+        state.accounts = null;
+      } else {
+        value = JSON.parse(value);
+        state.accounts = value && value.userAccounts;
+        state.getWalletDetaillsLoading = false;
+      }
     },
   },
 });

@@ -78,8 +78,10 @@ const Home = () => {
 
   useEffect(() => {
     if (!getWalletDetaillsLoading) {
-      dispatch(getBalance({ address: accounts[0].walletAddress }));
-      dispatch(getTransactions({ address: accounts[0].walletAddress }));
+      dispatch(getBalance({ address: accounts && accounts[0].walletAddress }));
+      dispatch(
+        getTransactions({ address: accounts && accounts[0].walletAddress })
+      );
     }
   }, [getWalletDetaillsLoading, getBalance, getTransactions]);
 

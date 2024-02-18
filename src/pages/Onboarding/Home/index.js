@@ -7,6 +7,7 @@ import { PhraseCard } from "../../../components/Cards/Onboarding/PhraseCard";
 import { GetStartedCard } from "../../../components/Cards/Onboarding/GetStartedCard";
 import { OldWalletPhraseCard } from "../../../components/Cards/Onboarding/OldWalletPhraseCard";
 import { ViewAccounts } from "../../../components/Cards/Onboarding/ViewAccount";
+import { AddEnsName } from "../../../components/Cards/Onboarding/AddEnsName";
 
 const Home = () => {
   const [pages, setPages] = useState(
@@ -20,6 +21,7 @@ const Home = () => {
     <PhraseCard pages={pages} setPages={setPages} x={x} setX={setX} />,
     <OldWalletPhraseCard pages={pages} setPages={setPages} x={x} setX={setX} />,
     <ViewAccounts pages={pages} setPages={setPages} x={x} setX={setX} />,
+    <AddEnsName pages={pages} setPages={setPages} x={x} setX={setX} />,
     <GetStartedCard pages={pages} setPages={setPages} x={x} setX={setX} />,
   ];
 

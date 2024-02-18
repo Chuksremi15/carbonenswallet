@@ -36,7 +36,7 @@ export const AddRecipient = ({
         <div className="font-body px-6">
           <label className="text-textPrimary text-sm">Add Recipient</label>
           <input
-            className="w-full bg-white text-textPrimary font-light  placeholder-[#b4b3df] placeholder:font-light font-body text-sm rounded py-3 px-4 focus:outline-none focus:ring-0 focus:border-[#e5dbf7] focus:bg-white"
+            className="w-full bg-white text-textPrimary   placeholder-[#b4b3df] placeholder:font-light font-body text-sm rounded py-3 px-4 focus:outline-none focus:ring-0 focus:border-[#e5dbf7] focus:bg-white"
             onChange={(e) => handleOnChange(e.target.value)}
             type={"public address or ENS"}
             placeholder="Public address or ENS"

@@ -3,6 +3,7 @@ import { PrimaryButton, SecondaryButton } from "../../Buttons";
 import { motion } from "framer-motion";
 import { FramerScrollLeft } from "../../utils/framer";
 import { useEffect } from "react";
+import { walletController } from "../../../controller/walletController";
 
 const secretPhraseArray12 = [
   { mnemonicIndex: 1, value: "" },
@@ -23,6 +24,7 @@ const secretPhraseArray24 = [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
 export const OldWalletPhraseCard = ({ pages, setPages, x, setX }) => {
   const [checked, setChecked] = useState(false);
   const [formObject, setFormObject] = useState({});
+  const [createAccountloading, setCreateAccountLoading] = useState(false);
 
   const [secretPhraseArray, setSecretPhraseArray] = useState([
     { mnemonicIndex: 1, value: "" },
@@ -159,6 +161,35 @@ export const OldWalletPhraseCard = ({ pages, setPages, x, setX }) => {
     }
   };
 
+  const { addAccount } = walletController();
+
+  const handleAddAccount = async () => {
+    try {
+      setCreateAccountLoading(true);
+
+      console.log(secretPhraseArray);
+
+      let reducedMmemonic = "";
+
+      for (let i = 0; i < secretPhraseArray.length; i++) {
+        reducedMmemonic += secretPhraseArray[i].value + " ";
+      }
+
+      reducedMmemonic = reducedMmemonic.trim();
+
+      await addAccount(reducedMmemonic);
+
+      setCreateAccountLoading(false);
+
+      setPages(pages + 1);
+      localStorage.setItem("pages", pages + 1);
+      localStorage.setItem("x", 1000);
+      setX(1000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <motion.div
       key={"homeCard"}
@@ -214,9 +245,9 @@ export const OldWalletPhraseCard = ({ pages, setPages, x, setX }) => {
         <div className="w-full">
           <PrimaryButton
             action={() => {
-              setPages(pages + 1);
-              setX(1000);
+              handleAddAccount();
             }}
+            loading={createAccountloading}
             disabled={!checked}
             text={"Import Wallet"}
           />

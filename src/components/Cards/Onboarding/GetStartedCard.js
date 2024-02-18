@@ -1,8 +1,7 @@
 import React from "react";
-import { PrimaryButton, SecondaryButton } from "../../Buttons";
+import { PrimaryButton } from "../../Buttons";
 import { motion } from "framer-motion";
-import { FramerScrollRight } from "../../utils/framer";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export const GetStartedCard = ({ pages, setPages, x, setX }) => {
   const history = useHistory();

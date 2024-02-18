@@ -69,7 +69,9 @@ export const Transfer = () => {
       setAmount={setAmount}
       amountUsd={amountUsd}
       setAmountUsd={setAmountUsd}
-      fromAddress={!getWalletDetaillsLoading && accounts[0].walletAddress}
+      fromAddress={
+        !getWalletDetaillsLoading && accounts && accounts[0].walletAddress
+      }
       setTransactionData={setTransactionData}
       setGasFeeEstimate={setGasFeeEstimate}
     />,
