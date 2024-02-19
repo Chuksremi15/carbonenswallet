@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { PrimaryButton, SecondaryButton } from "../../Buttons";
 import { motion } from "framer-motion";
 import { FramerScrollLeft } from "../../utils/framer";
-import { useEffect } from "react";
-import { walletController } from "../../../controller/walletController";
 
 const secretPhraseArray12 = [
   { mnemonicIndex: 1, value: "" },
@@ -21,7 +19,14 @@ const secretPhraseArray12 = [
 ];
 const secretPhraseArray24 = [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
 
-export const OldWalletPhraseCard = ({ pages, setPages, x, setX }) => {
+export const OldWalletPhraseCard = ({
+  pages,
+  setPages,
+  x,
+  setX,
+  setFromOld,
+  setMnemonic,
+}) => {
   const [checked, setChecked] = useState(false);
   const [formObject, setFormObject] = useState({});
   const [createAccountloading, setCreateAccountLoading] = useState(false);
@@ -161,14 +166,8 @@ export const OldWalletPhraseCard = ({ pages, setPages, x, setX }) => {
     }
   };
 
-  const { addAccount } = walletController();
-
   const handleAddAccount = async () => {
     try {
-      setCreateAccountLoading(true);
-
-      console.log(secretPhraseArray);
-
       let reducedMmemonic = "";
 
       for (let i = 0; i < secretPhraseArray.length; i++) {
@@ -177,12 +176,11 @@ export const OldWalletPhraseCard = ({ pages, setPages, x, setX }) => {
 
       reducedMmemonic = reducedMmemonic.trim();
 
-      await addAccount(reducedMmemonic);
+      setMnemonic(reducedMmemonic);
 
-      setCreateAccountLoading(false);
-
-      setPages(pages + 1);
-      localStorage.setItem("pages", pages + 1);
+      setFromOld(true);
+      setPages(pages - 2);
+      localStorage.setItem("pages", pages - 2);
       localStorage.setItem("x", 1000);
       setX(1000);
     } catch (error) {

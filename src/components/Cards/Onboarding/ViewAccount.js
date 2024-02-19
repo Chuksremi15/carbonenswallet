@@ -12,7 +12,7 @@ import { addEnsContracts } from "@ensdomains/ensjs";
 import { createSubname, setAddressRecord } from "@ensdomains/ensjs/wallet";
 import { privateKeyToAccount } from "viem/accounts";
 
-export const ViewAccounts = ({ pages, setPages, x, setX }) => {
+export const ViewAccounts = ({ pages, setPages, x, setX, fromOld }) => {
   const dispatch = useDispatch();
 
   const [observableStore, setObservableStore] = useState({});
@@ -34,52 +34,26 @@ export const ViewAccounts = ({ pages, setPages, x, setX }) => {
 
     if (!loading) {
       dispatch(
-        getBalance({ address: observableStore.userAccounts[0].walletAddress })
+        getBalance({
+          address:
+            observableStore && observableStore.userAccounts[0].walletAddress,
+        })
       );
     }
   }, [loading, getBalance]);
 
-  const hash = async () => {
-    setPages(pages + 1);
-    setX(1000);
-    // try {
-    //   const account = privateKeyToAccount(process.env.REACT_APP_PRIVATE_KEY);
-    //   console.log(account.address);
-    //   const wallet = createWalletClient({
-    //     account,
-    //     chain: addEnsContracts({ network: "sepolia", contracts: "registry" }),
-    //     transport: http(
-    //       "https://eth-sepolia.g.alchemy.com/v2/i__hU94P_jyFKF1ZcwVpE4Uamw0VB71z"
-    //     ),
-    //   });
-    //   // console.log(wallet);
-    //   let createSubTransactionHash = await createSubname(wallet, {
-    //     name: "sam.remyboy.eth",
-    //     owner: account.address,
-    //     contract: "registry",
-    //     chain: sepolia,
-    //   });
-    //   let setAddTransactionHash = await setAddressRecord(wallet, {
-    //     name: "sam.remyboy.eth",
-    //     coin: "ETH",
-    //     value: "0x673cdcbaDBD4137A627A92123c94D5CDBA05839c",
-    //     resolverAddress: "0x8FADE66B79cC9f707aB26799354482EB93a5B7dD",
-    //     chain: sepolia,
-    //   });
-    //   let transferTransactionHash = await createSubname(wallet, {
-    //     name: "sam.remyboy.eth",
-    //     owner: "0x673cdcbaDBD4137A627A92123c94D5CDBA05839c",
-    //     contract: "registry",
-    //     chain: sepolia,
-    //   });
-    //   console.log(
-    //     createSubTransactionHash,
-    //     setAddTransactionHash,
-    //     transferTransactionHash
-    //   );
-    // } catch (error) {
-    //   console.log(error);
-    // }
+  const goBack = () => {
+    localStorage.setItem("walletSecrets", null);
+    localStorage.setItem("userAccounts", null);
+
+    if (fromOld) {
+      FramerScrollLeft(pages, setPages, setX);
+    } else {
+      setPages(pages - 2);
+      localStorage.setItem("pages", pages - 2);
+      localStorage.setItem("x", 1000);
+      setX(1000);
+    }
   };
 
   return (
@@ -94,7 +68,7 @@ export const ViewAccounts = ({ pages, setPages, x, setX }) => {
       <div className="h-[50px]  p-4">
         <img
           onClick={() => {
-            FramerScrollLeft(pages, setPages, setX);
+            goBack();
           }}
           className="cursor-pointer"
           src="/img/icons/arrowleft.svg"
@@ -116,7 +90,9 @@ export const ViewAccounts = ({ pages, setPages, x, setX }) => {
 
             <div className="relative bg-[#efefef] rounded mt-6">
               <h6 className="font-medium text-base px-4 py-2 font-body">
-                {!loading && observableStore.userAccounts[0].accountName}
+                {!loading &&
+                  observableStore &&
+                  observableStore.userAccounts[0].accountName}
               </h6>
 
               <div className=" flex items-stretch justify-between font-body p-4 border-t border-gray-300">
@@ -135,13 +111,17 @@ export const ViewAccounts = ({ pages, setPages, x, setX }) => {
                 <div className="text-right">
                   <p className="font-medium text-base font-body">
                     {!loading &&
+                      observableStore &&
                       observableStore.userAccounts[0].walletAddress.slice(0, 6)}
                     ....
                     {!loading &&
+                      observableStore &&
                       observableStore.userAccounts[0].walletAddress.slice(
-                        observableStore.userAccounts[0].walletAddress.length -
-                          5,
-                        observableStore.userAccounts[0].walletAddress.length
+                        observableStore &&
+                          observableStore.userAccounts[0].walletAddress.length -
+                            5,
+                        observableStore &&
+                          observableStore.userAccounts[0].walletAddress.length
                       )}
                   </p>
                   <p className="text-sm text-gray-600 font-body">New wallet</p>
@@ -155,9 +135,8 @@ export const ViewAccounts = ({ pages, setPages, x, setX }) => {
       <div className="h-[90px] w-full ">
         <PrimaryButton
           action={() => {
-            // setPages(pages + 1);
-            // setX(1000);
-            hash();
+            setPages(pages + 1);
+            setX(1000);
           }}
           disabled={false}
           text={"Continue"}

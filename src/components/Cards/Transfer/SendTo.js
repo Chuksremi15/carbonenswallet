@@ -74,7 +74,7 @@ export const SendTo = ({
     try {
       setLoading(true);
       const { gasFeeWei, gasFeeEth, estimatedGasFee } = await gasPriceEth();
-      console.log(gasFeeWei, gasFeeEth, estimatedGasFee);
+
       let nonce = await provider.getTransactionCount(fromAddress);
 
       let gasFeeEstimate = {};

@@ -17,7 +17,6 @@ export const walletController = () => {
 
   const addAccount = async (mnemonic) => {
     try {
-      console.log(mnemonic);
       keyring.seedPhrase = mnemonic;
 
       let account = {

@@ -3,12 +3,21 @@ import { motion } from "framer-motion";
 import { PrimaryButton } from "../../Buttons";
 import { FramerScrollLeft, FramerScrollRight } from "../../utils/framer";
 import zxcvbn from "zxcvbn";
+import { walletController } from "../../../controller/walletController";
 
-export const PasswordForm = ({ pages, setPages, x, setX }) => {
+export const PasswordForm = ({
+  pages,
+  setPages,
+  x,
+  setX,
+  fromOld,
+  mnemonic,
+}) => {
   const PASSWORD_MIN_LENGTH = 8;
   const [passwordStrength, setPasswordStrength] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [createAccountloading, setCreateAccountLoading] = useState(false);
 
   const getPasswordStrengthLabel = (isTooShort, score) => {
     if (isTooShort) {
@@ -41,6 +50,22 @@ export const PasswordForm = ({ pages, setPages, x, setX }) => {
       text: "weak",
       description: "passwordStrengthDescription",
     };
+  };
+
+  const { addAccount } = walletController();
+
+  const handleScrollRight = async () => {
+    if (fromOld) {
+      setCreateAccountLoading(true);
+      await addAccount(mnemonic);
+      setCreateAccountLoading(false);
+
+      setPages(pages + 3);
+      localStorage.setItem("pages", pages + 3);
+      localStorage.setItem("x", 1000);
+    } else {
+      FramerScrollRight(pages, setPages, setX);
+    }
   };
 
   const handlePasswordChange = (passwordInput) => {
@@ -147,7 +172,7 @@ export const PasswordForm = ({ pages, setPages, x, setX }) => {
       <div className="h-[100px] bottom-0 w-full ">
         <PrimaryButton
           action={() => {
-            FramerScrollRight(pages, setPages, setX);
+            handleScrollRight();
           }}
           disabled={confirmPasswordError || password === ""}
           text={"Continue"}

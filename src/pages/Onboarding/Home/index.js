@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import { OnboardingWrapper } from "../../../components/page/OnboardingWrapper";
 import { AnimatePresence } from "framer-motion";
 import { HomeCard } from "../../../components/Cards/Onboarding/HomeCard";
@@ -8,19 +8,66 @@ import { GetStartedCard } from "../../../components/Cards/Onboarding/GetStartedC
 import { OldWalletPhraseCard } from "../../../components/Cards/Onboarding/OldWalletPhraseCard";
 import { ViewAccounts } from "../../../components/Cards/Onboarding/ViewAccount";
 import { AddEnsName } from "../../../components/Cards/Onboarding/AddEnsName";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { getWalletDetails } from "../../../features/onboarding/onboardingSlice";
 
 const Home = () => {
   const [pages, setPages] = useState(
     Number(localStorage.getItem("pages")) || 0
   );
   const [x, setX] = useState(Number(localStorage.getItem("x")) || 0);
+  const [fromOld, setFromOld] = useState(false);
+  const [mnemonic, setMnemonic] = useState(null);
+
+  const dispatch = useDispatch();
+
+  const history = useHistory();
+
+  const { accounts } = useSelector((store) => {
+    const { accounts } = store.onboarding;
+
+    return {
+      accounts,
+    };
+  });
+
+  useEffect(() => {
+    dispatch(getWalletDetails());
+  }, [getWalletDetails]);
+
+  useEffect(() => {
+    if (accounts !== null) {
+      history.push("/dashboard");
+    }
+  }, [accounts]);
 
   const componentArray = [
     <HomeCard pages={pages} setPages={setPages} x={x} setX={setX} />,
-    <PasswordForm pages={pages} setPages={setPages} x={x} setX={setX} />,
+    <PasswordForm
+      pages={pages}
+      setPages={setPages}
+      x={x}
+      setX={setX}
+      fromOld={fromOld}
+      mnemonic={mnemonic}
+    />,
     <PhraseCard pages={pages} setPages={setPages} x={x} setX={setX} />,
-    <OldWalletPhraseCard pages={pages} setPages={setPages} x={x} setX={setX} />,
-    <ViewAccounts pages={pages} setPages={setPages} x={x} setX={setX} />,
+    <OldWalletPhraseCard
+      setFromOld={setFromOld}
+      pages={pages}
+      setPages={setPages}
+      x={x}
+      setX={setX}
+      setMnemonic={setMnemonic}
+    />,
+    <ViewAccounts
+      fromOld={fromOld}
+      pages={pages}
+      setPages={setPages}
+      x={x}
+      setX={setX}
+    />,
     <AddEnsName pages={pages} setPages={setPages} x={x} setX={setX} />,
     <GetStartedCard pages={pages} setPages={setPages} x={x} setX={setX} />,
   ];

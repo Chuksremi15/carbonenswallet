@@ -33,8 +33,8 @@ export const HomeCard = ({ pages, setPages, x, setX }) => {
       <div className="absolute bottom-0 w-full mx-auto p-5 flex gap-x-4 gap-y-3">
         <PrimaryButton
           action={() => {
-            // FramerScrollRight(pages, setPages, setX);
-            handleScroll();
+            FramerScrollRight(pages, setPages, setX);
+            // handleScroll();
           }}
           text={"Create account"}
         />

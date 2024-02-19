@@ -18,8 +18,6 @@ const onboardingSlice = createSlice({
     getWalletDetails: (state, { payload }) => {
       let value = localStorage.getItem("userAccounts");
 
-      console.log(value);
-
       if (value === null) {
         state.accounts = null;
       } else {

@@ -96,7 +96,6 @@ export const AddEnsName = ({ pages, setPages, x, setX }) => {
 
   const handleSubmit = async () => {
     try {
-      console.log(currentValue, debouncedValue);
       if (ensAddress === null && !loading) {
         let createSubTransactionHash = await createSubname(wallet, {
           name: debouncedValue,

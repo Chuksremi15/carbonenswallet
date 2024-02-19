@@ -24,7 +24,9 @@ const Dashboard = ({ match: { path } }) => {
   }, [getWalletDetails]);
 
   useEffect(() => {
-    if (accounts === null) history.push("/");
+    if (accounts === null) {
+      history.push("/");
+    }
   }, [accounts]);
 
   return (

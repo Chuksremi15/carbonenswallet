@@ -27,6 +27,7 @@ const DeleteAccount = ({ openDa, handleCloseDa, handleCloseNav }) => {
       if (value) {
         localStorage.setItem("walletSecrets", null);
         localStorage.setItem("userAccounts", null);
+        localStorage.setItem("password", null);
 
         localStorage.setItem("pages", 0);
         localStorage.setItem("x", 0);
