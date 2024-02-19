@@ -39,7 +39,7 @@ export const UserBalance = ({
             ) : (
               <div className="text-white font-body">
                 <p className="text-base m-0">
-                  {accounts && accounts[0].accountName}
+                  {accounts && accounts[0].ensName}
                 </p>
                 <p className="text-xs -mt-0.5">
                   {" "}

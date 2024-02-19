@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TransferCardWrapper } from "../../page/TransferCardWrapper";
 import { CardPrimaryButton, CardSecondaryButton } from "../../Buttons";
 import { motion } from "framer-motion";
 import { FramerScrollRight } from "../../utils/framer";
 import { isAddress } from "ethers";
+import { createWalletClient, createPublicClient, custom, http } from "viem";
+import { mainnet, sepolia } from "viem/chains";
+import { CircularProgress } from "@material-ui/core";
+import useDebounce from "../../../hooks/UseDebounce";
 
 export const AddRecipient = ({
   handleClose,
@@ -15,15 +19,58 @@ export const AddRecipient = ({
   setRecipient,
 }) => {
   const [error, setError] = useState("");
-  const handleOnChange = (e) => {
+  const [ensAddress, setEnsAddress] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [callDounced, setCallDounced] = useState(false);
+  const [currentValue, debouncedValue, setValue] = useDebounce(inputValue, 500);
+
+  const publicClient = createPublicClient({
+    chain: sepolia,
+    transport: http(
+      "https://eth-sepolia.g.alchemy.com/v2/i__hU94P_jyFKF1ZcwVpE4Uamw0VB71z"
+    ),
+  });
+
+  const handleOnChange = async (e) => {
+    setInputValue(e);
+    setValue(e);
     if (!isAddress(e)) {
-      setError("Enter a valid address");
-      setRecipient(e);
+      setCallDounced(true);
     } else {
       setRecipient(e);
+      setInputValue(e);
       setError("");
     }
   };
+
+  useEffect(() => {
+    const runDebounced = async () => {
+      if (debouncedValue) {
+        setLoading(true);
+        const ensAddress = await publicClient.getEnsAddress({
+          name: debouncedValue,
+        });
+
+        if (ensAddress === null) {
+          setError("Enter a valid address or ens");
+          setEnsAddress("");
+          setLoading(false);
+        } else {
+          setInputValue(debouncedValue);
+          setEnsAddress(ensAddress);
+          setRecipient(ensAddress);
+          setError("");
+          setLoading(false);
+        }
+      }
+    };
+
+    if (callDounced) {
+      runDebounced();
+    }
+  }, [debouncedValue, callDounced]);
+
   return (
     <motion.div
       key={"homeCard"}
@@ -40,9 +87,19 @@ export const AddRecipient = ({
             onChange={(e) => handleOnChange(e.target.value)}
             type={"public address or ENS"}
             placeholder="Public address or ENS"
-            value={recipient}
+            value={inputValue}
             required
           />
+          {loading ? (
+            <CircularProgress size={20} className="text-primary mt-3" />
+          ) : (
+            ensAddress && (
+              <p className="text-textPrimary text-xs mt-3">
+                Address: {ensAddress}
+              </p>
+            )
+          )}
+
           {error && (
             <p className="text-sm text-red-500 font-body font-light mt-2">
               {error}

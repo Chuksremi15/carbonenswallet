@@ -16,6 +16,7 @@ export const PasswordForm = ({
   const PASSWORD_MIN_LENGTH = 8;
   const [passwordStrength, setPasswordStrength] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [createAccountloading, setCreateAccountLoading] = useState(false);
 
@@ -55,6 +56,9 @@ export const PasswordForm = ({
   const { addAccount } = walletController();
 
   const handleScrollRight = async () => {
+    localStorage.setItem("password", password);
+    setPassword("");
+
     if (fromOld) {
       setCreateAccountLoading(true);
       await addAccount(mnemonic);
@@ -108,8 +112,8 @@ export const PasswordForm = ({
     if (confirmPasswordInput !== password) {
       setConfirmPasswordError("Password does not match");
     } else {
+      setConfirmPassword(confirmPasswordInput);
       setConfirmPasswordError("");
-      localStorage.setItem("password", password);
     }
   };
 
@@ -174,7 +178,9 @@ export const PasswordForm = ({
           action={() => {
             handleScrollRight();
           }}
-          disabled={confirmPasswordError || password === ""}
+          disabled={
+            confirmPasswordError || password === "" || confirmPassword === ""
+          }
           text={"Continue"}
         />
       </div>

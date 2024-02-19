@@ -82,7 +82,8 @@ export const Deposit = ({ handleClose, handleOpen, open }) => {
                 <div className="font-body row-span-6 px-6 pb-8 relative border-b border-[#e5dbf7] mt-6">
                   <h6 className="text-textPrimary text-sm">Direct deposit</h6>
                   <p className="text-[13px] text-textLight font-normal">
-                    The address below is to recieve ETH
+                    Share your carbon ENS subname or wallet address below to
+                    receive eth.
                   </p>
 
                   {getWalletDetaillsLoading ? (
@@ -99,8 +100,17 @@ export const Deposit = ({ handleClose, handleOpen, open }) => {
                                 src="/img/icons/addressicon1.svg"
                               />
                               <p className="font-body text-sm text-textPrimary m-0">
-                                Daily Driver
+                                {accounts && accounts[0].ensName}
                               </p>
+                              <div
+                                onClick={() =>
+                                  copyToClipboard(
+                                    accounts && accounts[0].ensName
+                                  )
+                                }
+                              >
+                                <BiSolidCopy className="text-xl cursor-pointer text-primary" />
+                              </div>
                             </div>
 
                             <p className="font-body bg-white p-2 rounded text-xs break-words w-[190px]  text-textLight">
@@ -120,7 +130,7 @@ export const Deposit = ({ handleClose, handleOpen, open }) => {
                           </div>
                         </div>
                       </div>
-                      <div className={`${privateKey ? "mt-7" : "mt-10"}`}>
+                      <div className={`${privateKey ? "mt-3" : "mt-10"}`}>
                         {showKeySection ? (
                           <div>
                             <div>

@@ -5,7 +5,7 @@ import { FramerScrollLeft } from "../../utils/framer";
 import { FaEyeSlash } from "react-icons/fa";
 import { Wallet, ethers } from "ethers";
 import { CircularProgress } from "@material-ui/core";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { walletController } from "../../../controller/walletController";
 
 export const PhraseCard = ({ pages, setPages, x, setX }) => {

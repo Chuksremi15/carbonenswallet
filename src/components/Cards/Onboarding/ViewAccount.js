@@ -45,6 +45,7 @@ export const ViewAccounts = ({ pages, setPages, x, setX, fromOld }) => {
   const goBack = () => {
     localStorage.setItem("walletSecrets", null);
     localStorage.setItem("userAccounts", null);
+    localStorage.setItem("password", null);
 
     if (fromOld) {
       FramerScrollLeft(pages, setPages, setX);

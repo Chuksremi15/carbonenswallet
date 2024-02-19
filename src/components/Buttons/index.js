@@ -8,7 +8,7 @@ export const PrimaryButton = ({ text, loading, action, disabled }) => {
         disabled ? "bg-primaryDisabled" : "bg-primary"
       } flex items-center text-sm justify-center w-full   py-3  cursor-pointer rounded font-body text-white`}
     >
-      {text}
+      {loading ? <CircularProgress size={20} color="white" /> : text}
     </div>
   );
 };

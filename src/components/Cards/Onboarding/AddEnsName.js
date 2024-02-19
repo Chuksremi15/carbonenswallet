@@ -14,12 +14,14 @@ import { privateKeyToAccount } from "viem/accounts";
 import { normalize } from "viem/ens";
 import { getAvailable } from "@ensdomains/ensjs/public";
 import useDebounce from "../../../hooks/UseDebounce";
+import { walletController } from "../../../controller/walletController";
 
 export const AddEnsName = ({ pages, setPages, x, setX }) => {
   const dispatch = useDispatch();
 
   const [observableStore, setObservableStore] = useState({});
   const [loading, setLoading] = useState(true);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const resolverAddress = "0x8FADE66B79cC9f707aB26799354482EB93a5B7dD";
 
   useEffect(() => {
@@ -44,18 +46,6 @@ export const AddEnsName = ({ pages, setPages, x, setX }) => {
       "https://eth-sepolia.g.alchemy.com/v2/i__hU94P_jyFKF1ZcwVpE4Uamw0VB71z"
     ),
   });
-
-  useEffect(() => {
-    let value = localStorage.getItem("userAccounts");
-    setObservableStore(JSON.parse(value));
-    setLoading(false);
-
-    if (!loading) {
-      dispatch(
-        getBalance({ address: observableStore.userAccounts[0].walletAddress })
-      );
-    }
-  }, [loading, getBalance]);
 
   const [error, setError] = useState("");
   const [ensSubname, setEnsSubname] = useState("");
@@ -94,16 +84,18 @@ export const AddEnsName = ({ pages, setPages, x, setX }) => {
     getAddressAsync();
   }, [debouncedValue]);
 
+  const { updateEnsName } = walletController();
+
   const handleSubmit = async () => {
     try {
       if (ensAddress === null && !loading) {
+        setUpdateLoading(true);
         let createSubTransactionHash = await createSubname(wallet, {
           name: debouncedValue,
           owner: account.address,
           contract: "registry",
           chain: sepolia,
         });
-
         let setAddTransactionHash = await setAddressRecord(wallet, {
           name: debouncedValue,
           coin: "ETH",
@@ -111,7 +103,6 @@ export const AddEnsName = ({ pages, setPages, x, setX }) => {
           resolverAddress: resolverAddress,
           chain: sepolia,
         });
-
         let transferTransactionHash = await createSubname(wallet, {
           name: debouncedValue,
           owner: observableStore.userAccounts[0].walletAddress,
@@ -125,11 +116,21 @@ export const AddEnsName = ({ pages, setPages, x, setX }) => {
           transferTransactionHash
         );
 
-        setPages(pages + 1);
-        setX(1000);
+        if (transferTransactionHash) {
+          const response = updateEnsName(
+            observableStore.userAccounts[0].accountName,
+            debouncedValue
+          );
+
+          setPages(pages + 1);
+          setX(1000);
+        }
+
+        setUpdateLoading(false);
       }
     } catch (error) {
       setError(error.toString());
+      setUpdateLoading(false);
     }
   };
 
@@ -200,6 +201,7 @@ export const AddEnsName = ({ pages, setPages, x, setX }) => {
           action={() => {
             handleSubmit();
           }}
+          loading={updateLoading}
           disabled={error || ensAddress}
           text={"Continue"}
         />
