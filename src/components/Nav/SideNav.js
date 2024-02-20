@@ -8,6 +8,8 @@ import {
 } from "../page/TransferCardWrapper";
 import SecurityPrivacy from "../settings/SecurityPrivacy";
 import DeleteAccount from "../settings/DeleteAccount";
+import { walletController } from "../../controller/walletController";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 export const SideNav = ({ openNav, handleCloseNav }) => {
   const [openSp, setOpenSp] = useState(false);
@@ -24,6 +26,17 @@ export const SideNav = ({ openNav, handleCloseNav }) => {
   };
   const handleCloseDa = () => {
     setOpenDa(false);
+  };
+
+  const { lockAccount } = walletController();
+
+  const history = useHistory();
+
+  const handleLock = () => {
+    let responce = lockAccount();
+    if (responce === "Account Locked") {
+      history.push("/unlock");
+    }
   };
 
   return (
@@ -92,7 +105,7 @@ export const SideNav = ({ openNav, handleCloseNav }) => {
                   </p>
                 </div>
                 <div
-                  onClick={() => handleOpenSp()}
+                  onClick={() => handleLock()}
                   className="border-b border-[#e5dbf7] pl-6 flex flex-col justify-center gap-y-0.5  h-full cursor-pointer"
                 >
                   <h6 className="font-head text-sm text-textPrimary">

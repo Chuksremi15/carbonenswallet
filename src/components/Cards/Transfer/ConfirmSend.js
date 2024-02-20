@@ -4,9 +4,13 @@ import { CardPrimaryButton, CardSecondaryButton } from "../../Buttons";
 import { motion } from "framer-motion";
 import { FramerScrollLeft } from "../../utils/framer";
 import { Wallet, formatEther } from "ethers";
-import { provider } from "../../../features/transactionSlice/transactionSlice";
+import {
+  getBalance,
+  provider,
+} from "../../../features/transactionSlice/transactionSlice";
 import toast from "react-hot-toast";
 import { Network } from "../../../utils/contants";
+import { useDispatch, useSelector } from "react-redux";
 
 export const ConfirmSend = ({
   handleClose,
@@ -17,13 +21,30 @@ export const ConfirmSend = ({
   transactionData,
   gasFeeEstimate,
   amountUsd,
+  signingKey,
+  setTransactionData,
+  setAmountUsd,
+  setAmount,
+  setRecipient,
 }) => {
+  const dispatch = useDispatch();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const { accounts, getWalletDetaillsLoading } = useSelector((store) => {
+    const { accounts, getWalletDetaillsLoading } = store.onboarding;
+
+    return {
+      accounts,
+      getWalletDetaillsLoading,
+    };
+  });
+
+  let wallet = new Wallet(signingKey, provider);
+
   const handleSubmit = async () => {
     try {
-      let wallet = new Wallet(process.env.REACT_APP_PRIVATE_KEY, provider);
+      setLoading(true);
 
       let txResponse = await wallet.sendTransaction(transactionData);
 
@@ -34,12 +55,25 @@ export const ConfirmSend = ({
       );
 
       setLoading(false);
+
+      setPages(0);
+      localStorage.setItem("pages", 0);
+
+      toast.success("sent!");
+
+      dispatch(getBalance({ address: accounts && accounts[0].walletAddress }));
+
+      setTransactionData({});
+      setAmountUsd(0);
+      setAmount(0);
+      setRecipient("");
+      handleClose();
     } catch (error) {
       console.log(error);
       if (error) {
         toast.error("Invalid request");
       }
-
+      setRecipient("");
       setLoading(false);
     }
   };

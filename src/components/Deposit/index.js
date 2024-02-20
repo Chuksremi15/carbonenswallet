@@ -226,7 +226,7 @@ export const Deposit = ({ handleClose, handleOpen, open }) => {
                     Buy ETH on binance
                   </h6>
                   <p className="text-[13px] text-textLight font-normal">
-                    You can buy eth on Binance and send to your metamask account
+                    You can buy eth on Binance and send to your carbon account
                   </p>
                 </div> */}
               </div>

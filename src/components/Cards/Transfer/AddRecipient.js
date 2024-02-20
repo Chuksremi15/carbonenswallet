@@ -34,8 +34,8 @@ export const AddRecipient = ({
 
   const handleOnChange = async (e) => {
     setInputValue(e);
-    setValue(e);
     if (!isAddress(e)) {
+      setValue(e);
       setCallDounced(true);
     } else {
       setRecipient(e);
@@ -91,7 +91,12 @@ export const AddRecipient = ({
             required
           />
           {loading ? (
-            <CircularProgress size={20} className="text-primary mt-3" />
+            <div className="flex items-center gap-x-2 pt-3">
+              <p className="text-sm text-textPrimary font-body ">
+                Getting address...
+              </p>
+              <CircularProgress size={15} className="text-textLight" />{" "}
+            </div>
           ) : (
             ensAddress && (
               <p className="text-textPrimary text-xs mt-3">

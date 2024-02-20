@@ -12,8 +12,12 @@ import {
   Wallet,
   SigningKey,
 } from "ethers";
-import { provider } from "../../../features/transactionSlice/transactionSlice";
+import {
+  getBalance,
+  provider,
+} from "../../../features/transactionSlice/transactionSlice";
 import toast from "react-hot-toast";
+import { Network } from "../../../utils/contants";
 
 export const SendTo = ({
   handleClose,
@@ -63,7 +67,7 @@ export const SendTo = ({
     to: "",
     value: "",
     gasLimit: "21000",
-    maxPriorityFeePerGas: parseEther("0.00001"),
+    maxPriorityFeePerGas: "",
     maxFeePerGas: "",
     nonce: 0,
     type: 2,
@@ -88,7 +92,7 @@ export const SendTo = ({
       transaction.to = recipient;
       transaction.value = parseEther(amount);
       transaction.maxFeePerGas = gasFeeWei;
-      transaction.maxPriorityFeePerGas = parseEther(`0.00000001`);
+      transaction.maxPriorityFeePerGas = parseEther("0.00000000002");
       transaction.nonce = nonce;
 
       setTransactionData(transaction);
@@ -135,7 +139,7 @@ export const SendTo = ({
             <div className="flex justify-between">
               <label className="text-textPrimary text-sm">Asset</label>
               <label className="text-xs font-light text-[#b4b3df]">
-                Ethereum Main Network
+                {Network} Network
               </label>
             </div>
             <input

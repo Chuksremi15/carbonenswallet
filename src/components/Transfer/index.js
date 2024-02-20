@@ -84,6 +84,14 @@ export const Transfer = () => {
       transactionData={transactionData}
       gasFeeEstimate={gasFeeEstimate}
       amountUsd={amountUsd}
+      signingKey={
+        !getWalletDetaillsLoading && accounts && accounts[0].privateKey
+      }
+      getWalletDetaillsLoading={getWalletDetaillsLoading}
+      setTransactionData={setTransactionData}
+      setAmountUsd={setAmountUsd}
+      setAmount={setAmount}
+      setRecipient={setRecipient}
     />,
   ];
 

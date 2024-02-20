@@ -47,6 +47,7 @@ export const walletController = () => {
 
       observableStore.userAccounts.push(userAccount);
       observableStore.isUnlocked = true;
+      observableStore.isUnlocked = false;
       keyring.accounts.push(account);
 
       let password = localStorage.getItem("password");
@@ -89,6 +90,8 @@ export const walletController = () => {
     storeValue = JSON.parse(storeValue);
     storeValue.isUnlocked = false;
     localStorage.setItem("userAccounts", JSON.stringify(storeValue));
+
+    return "Account Locked";
   };
 
   const unlockAccount = async (password) => {
@@ -99,6 +102,8 @@ export const walletController = () => {
       storeValue = JSON.parse(storeValue);
       storeValue.isUnlocked = true;
       localStorage.setItem("userAccounts", JSON.stringify(storeValue));
+
+      return "Account Unlocked";
     } catch (error) {
       return "Incorrect password";
     }

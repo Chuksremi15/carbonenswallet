@@ -24,23 +24,37 @@ const Home = () => {
 
   const history = useHistory();
 
-  const { accounts } = useSelector((store) => {
-    const { accounts } = store.onboarding;
+  const { accounts, getWalletDetaillsLoading, isUnlocked } = useSelector(
+    (store) => {
+      const { accounts, getWalletDetaillsLoading, isUnlocked } =
+        store.onboarding;
 
-    return {
-      accounts,
-    };
-  });
+      return {
+        accounts,
+        getWalletDetaillsLoading,
+        isUnlocked,
+      };
+    }
+  );
 
   useEffect(() => {
     dispatch(getWalletDetails());
   }, [getWalletDetails]);
 
   useEffect(() => {
-    if (accounts !== null) {
-      history.push("/dashboard");
+    if (!getWalletDetaillsLoading) {
+      if (accounts !== null) {
+        if (isUnlocked) {
+          history.push("/dashboard");
+        } else {
+          history.push("/unlock");
+        }
+      } else {
+        history.push("/");
+      }
+    } else {
     }
-  }, [accounts]);
+  }, [accounts, getWalletDetaillsLoading]);
 
   const componentArray = [
     <HomeCard pages={pages} setPages={setPages} x={x} setX={setX} />,
