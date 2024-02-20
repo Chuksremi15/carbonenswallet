@@ -47,7 +47,6 @@ export const walletController = () => {
 
       observableStore.userAccounts.push(userAccount);
       observableStore.isUnlocked = true;
-      observableStore.isUnlocked = false;
       keyring.accounts.push(account);
 
       let password = localStorage.getItem("password");

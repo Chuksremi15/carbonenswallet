@@ -1,7 +1,7 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-export const Assets = ({ x }) => {
+export const Assets = ({ x, balance, usdBalance, getBalanceLoading }) => {
   const TokenCard = ({ img, token }) => {
     return (
       <div className="border-b border-[#e5dbf7] p-6">
@@ -10,8 +10,12 @@ export const Assets = ({ x }) => {
             <img className="" src={img} />
           </div>
           <div className="font-body">
-            <p className="text-sm m-0 text-textPrimary">0.56 {token}</p>
-            <p className="text-xs text-textLight">$356.47</p>
+            <p className="text-sm m-0 text-textPrimary">
+              {!getBalanceLoading && balance} {token}
+            </p>
+            <p className="text-xs text-textLight">
+              ${!getBalanceLoading && usdBalance}
+            </p>
           </div>
         </div>
       </div>
@@ -27,7 +31,6 @@ export const Assets = ({ x }) => {
       exit={{ x: -100 }}
     >
       <TokenCard img={"/img/icons/ethicon.svg"} token={"ETH"} />
-      <TokenCard img={"/img/icons/dataicon.svg"} token={"DATA"} />
     </motion.div>
   );
 };

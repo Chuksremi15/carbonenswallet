@@ -61,7 +61,7 @@ export const AddEnsName = ({ pages, setPages, x, setX }) => {
       //   setError("Enter a valid subname; exclude special characters and number");
 
       setEnsSubname(e);
-      let normalizeInput = normalize(e + ".remyboy.eth");
+      let normalizeInput = normalize(e + ".carbon.eth");
       setUpdatedInput(normalizeInput);
       setValue(normalizeInput);
       setError("");

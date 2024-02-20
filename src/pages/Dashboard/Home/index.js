@@ -86,7 +86,13 @@ const Home = () => {
   }, [getWalletDetaillsLoading, getBalance, getTransactions]);
 
   const componentArray = [
-    <Assets x={x} active={pages === 0} />,
+    <Assets
+      usdBalance={usdBalance}
+      balance={balance}
+      getBalanceLoading={getBalanceLoading}
+      x={x}
+      active={pages === 0}
+    />,
     <History
       x={x}
       transactions={transactions}
