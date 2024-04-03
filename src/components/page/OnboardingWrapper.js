@@ -3,7 +3,7 @@ import React from "react";
 export const OnboardingWrapper = ({ children }) => {
   return (
     <div className="relative pt-10 h-[90vh] flex items-center justify-center">
-      <div className="absolute top-10 left-[10vh]">
+      <div className="hidden md:absolute top-10 left-[10vh]">
         <img className="h-10" src="/img/favicon.svg" />
       </div>
 

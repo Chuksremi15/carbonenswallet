@@ -13,10 +13,20 @@ export const walletController = () => {
     userAccounts: [],
   };
 
+  let network = {
+    networkName: "Main Ethereum Network",
+    network: "ethereum",
+    chainId: "",
+    imgColour: "#6EC67A",
+  };
+
   const generateSeedPhrase = () => {};
 
   const addAccount = async (mnemonic) => {
     try {
+      let networkStore = JSON.stringify(network);
+      localStorage.setItem("networks", networkStore);
+
       keyring.seedPhrase = mnemonic;
 
       let account = {

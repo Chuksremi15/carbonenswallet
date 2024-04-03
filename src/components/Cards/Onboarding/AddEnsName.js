@@ -12,7 +12,7 @@ import { addEnsContracts } from "@ensdomains/ensjs";
 import { createSubname, setAddressRecord } from "@ensdomains/ensjs/wallet";
 import { privateKeyToAccount } from "viem/accounts";
 import { normalize } from "viem/ens";
-import { getAvailable } from "@ensdomains/ensjs/public";
+import { getAvailable, getName } from "@ensdomains/ensjs/public";
 import useDebounce from "../../../hooks/UseDebounce";
 import { walletController } from "../../../controller/walletController";
 
@@ -33,7 +33,7 @@ export const AddEnsName = ({ pages, setPages, x, setX }) => {
   const publicClient = createPublicClient({
     chain: sepolia,
     transport: http(
-      "https://eth-sepolia.g.alchemy.com/v2/i__hU94P_jyFKF1ZcwVpE4Uamw0VB71z"
+      `https://eth-sepolia.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_KEY}`
     ),
   });
 
@@ -43,12 +43,13 @@ export const AddEnsName = ({ pages, setPages, x, setX }) => {
     account,
     chain: addEnsContracts({ network: "sepolia", contracts: "registry" }),
     transport: http(
-      "https://eth-sepolia.g.alchemy.com/v2/i__hU94P_jyFKF1ZcwVpE4Uamw0VB71z"
+      `https://eth-sepolia.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_KEY}`
     ),
   });
 
   const [error, setError] = useState("");
   const [ensSubname, setEnsSubname] = useState("");
+  const [ensname, setEnsname] = useState("");
   const [updatedInput, setUpdatedInput] = useState("");
   const [ensAddress, setEnsAddress] = useState(null);
   const [currentValue, debouncedValue, setValue] = useDebounce(
@@ -84,6 +85,30 @@ export const AddEnsName = ({ pages, setPages, x, setX }) => {
     getAddressAsync();
   }, [debouncedValue]);
 
+  // useEffect(() => {
+  //   if (!loading) {
+  //     console.log(observableStore.userAccounts[0].walletAddress);
+  //     const getNameAsync = async () => {
+  //       setEnsAddress(null);
+  //       const ensName = await publicClient.getEnsName({
+  //         address: observableStore.userAccounts[0].walletAddress,
+  //       });
+
+  //       const result = await getName(publicClient, {
+  //         address: "0x542e9864bFc95883082e068303370073Bcd16037",
+  //         contract: "resolver",
+  //         chain: sepolia,
+  //       });
+
+  //       console.log(ensName);
+  //       console.log(result);
+  //       setEnsname(ensName);
+  //     };
+
+  //     getNameAsync();
+  //   }
+  // }, [loading]);
+
   const { updateEnsName } = walletController();
 
   const handleSubmit = async () => {
@@ -110,26 +135,18 @@ export const AddEnsName = ({ pages, setPages, x, setX }) => {
           chain: sepolia,
         });
 
-        console.log(
-          createSubTransactionHash,
-          setAddTransactionHash,
-          transferTransactionHash
+        const response = await updateEnsName(
+          observableStore.userAccounts[0].accountName,
+          debouncedValue
         );
 
-        if (transferTransactionHash) {
-          const response = updateEnsName(
-            observableStore.userAccounts[0].accountName,
-            debouncedValue
-          );
-
-          setPages(pages + 1);
-          setX(1000);
-        }
+        setPages(pages + 1);
+        setX(1000);
 
         setUpdateLoading(false);
       }
     } catch (error) {
-      setError(error.toString());
+      // setError(error.toString());
       setUpdateLoading(false);
     }
   };
@@ -184,7 +201,15 @@ export const AddEnsName = ({ pages, setPages, x, setX }) => {
                   <p className="text-sm text-textLight font-body mt-2">
                     Availability for {debouncedValue} :{" "}
                     {ensAddress ? (
-                      <span className="text-red-500">Already in use</span>
+                      ensAddress ===
+                      observableStore.userAccounts[0].walletAddress ? (
+                        <span className="text-500">
+                          Your address {ensAddress} have a carbon.eth name{" "}
+                          {debouncedValue}
+                        </span>
+                      ) : (
+                        <span className="text-red-500">Already in use</span>
+                      )
                     ) : (
                       <span className="text-green-500">Available</span>
                     )}

@@ -16,8 +16,7 @@ const etherscanUrl = (address, action) => {
   return `https://api-sepolia.etherscan.io/api?module=account&action=${action}&address=${address}&startblock=0endblock=99999999&page=1&offset=10&sort=asc&apikey=ID8G2U6S2EWZYZ7JKPWXIFIY7SUDZFX5EP`;
 };
 
-const url =
-  "https://eth-sepolia.g.alchemy.com/v2/i__hU94P_jyFKF1ZcwVpE4Uamw0VB71z";
+const url = `https://eth-sepolia.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_KEY}`;
 
 export let provider = new ethers.JsonRpcProvider(url);
 

@@ -28,7 +28,7 @@ export const AddRecipient = ({
   const publicClient = createPublicClient({
     chain: sepolia,
     transport: http(
-      "https://eth-sepolia.g.alchemy.com/v2/i__hU94P_jyFKF1ZcwVpE4Uamw0VB71z"
+      `https://eth-sepolia.g.alchemy.com/v2/${process.env.REACT_APP_ALCHEMY_KEY}`
     ),
   });
 

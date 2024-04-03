@@ -67,7 +67,7 @@ export const Deposit = ({ handleClose, handleOpen, open }) => {
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         hideBackdrop
-        className="h-full w-full flex justify-center transition duration-500 pt-[70px]"
+        className="relative pt-10 h-[90vh] w-[375px] mx-auto flex items-center justify-centertransition duration-500"
       >
         <AnimatePresence>
           <motion.div

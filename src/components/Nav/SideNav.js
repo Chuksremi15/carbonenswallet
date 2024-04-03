@@ -10,10 +10,12 @@ import SecurityPrivacy from "../settings/SecurityPrivacy";
 import DeleteAccount from "../settings/DeleteAccount";
 import { walletController } from "../../controller/walletController";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import Networks from "../settings/Networks";
 
 export const SideNav = ({ openNav, handleCloseNav }) => {
   const [openSp, setOpenSp] = useState(false);
   const [openDa, setOpenDa] = useState(false);
+  const [openNt, setOpenNt] = useState(false);
 
   const handleOpenSp = () => {
     setOpenSp(true);
@@ -26,6 +28,12 @@ export const SideNav = ({ openNav, handleCloseNav }) => {
   };
   const handleCloseDa = () => {
     setOpenDa(false);
+  };
+  const handleOpenNt = () => {
+    setOpenNt(true);
+  };
+  const handleCloseNt = () => {
+    setOpenNt(false);
   };
 
   const { lockAccount } = walletController();
@@ -46,6 +54,11 @@ export const SideNav = ({ openNav, handleCloseNav }) => {
         handleCloseSp={handleCloseSp}
         handleCloseNav={handleCloseNav}
       />
+      <Networks
+        openDa={openNt}
+        handleCloseDa={handleCloseNt}
+        handleCloseNav={handleCloseNt}
+      />
       <DeleteAccount
         openDa={openDa}
         handleCloseDa={handleCloseDa}
@@ -57,7 +70,7 @@ export const SideNav = ({ openNav, handleCloseNav }) => {
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         hideBackdrop
-        className="h-full w-full flex justify-center transition duration-500 pt-[70px]"
+        className="relative pt-10 h-[90vh] w-[375px] mx-auto flex items-center justify-centertransition duration-500"
       >
         <AnimatePresence>
           <motion.div
@@ -91,6 +104,17 @@ export const SideNav = ({ openNav, handleCloseNav }) => {
                   </h6>
                   <p className="font-head text-xs text-textLight">
                     Privacy settings and wallet seed phrase
+                  </p>
+                </div>
+                <div
+                  onClick={() => handleOpenNt()}
+                  className="border-b border-[#e5dbf7] pl-6 flex flex-col justify-center gap-y-0.5  h-full cursor-pointer"
+                >
+                  <h6 className="font-head text-sm text-textPrimary">
+                    Networks
+                  </h6>
+                  <p className="font-head text-xs text-textLight">
+                    Manage custom RPC networks
                   </p>
                 </div>
                 <div

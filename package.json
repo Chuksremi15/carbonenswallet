@@ -30,7 +30,7 @@
     "react-toastify": "^9.1.1",
     "redstone-api": "^0.4.11",
     "redux-persist": "^6.0.0",
-    "viem": "^2.7.10",
+    "viem": "^2.8.11",
     "web-vitals": "^2.1.3",
     "yup": "^0.32.11",
     "zustand": "^3.6.9",
@@ -50,9 +50,11 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "chrome >= 67",
+      "edge >= 79",
+      "firefox >= 68",
+      "opera >= 54",
+      "safari >= 14"
     ],
     "development": [
       "last 1 chrome version",
